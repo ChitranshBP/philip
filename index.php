@@ -208,7 +208,7 @@ $year = date('Y');
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fraunces:opsz,wght@9..144,600..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script>
@@ -216,33 +216,37 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
+        /* Five colours. Ink, two surfaces, a hairline, one accent.
+           The older names (sun, burn, coral, sand…) are kept as aliases
+           so the markup did not have to be rewritten wholesale — they all
+           resolve into the five. Do not reintroduce a sixth. */
         brand: {
-          navy:   '#0F3E58',   // headline ink
-          ocean:  '#0E7FA8',   // primary blue
-          sky:    '#2BA9D8',   // bright water
-          aqua:   '#4FD1CE',   // shallows
-          foam:   '#E6F6FB',   // pale wash
-          mist:   '#F4FBFD',   // lightest wash
-          sand:   '#FDF4E6',   // warm sand
-          shell:  '#FFFAF3',   // off-white warm
-          coral:  '#FF7A59',   // sunset accent
-          burn:   '#DE4F2C',   // CTA / error
-          sun:    '#FFC24B',   // sunshine
-          ink:    '#173B4C',
-          slate:  '#4A6B7C',
-          line:   '#DCEAF1',
+          navy:   '#0F3E58',   // ink — all headings, dark surfaces
+          ink:    '#14313F',   // ink, a shade deeper for body emphasis
+          slate:  '#5A6E79',   // muted body text
+          line:   '#E7E5E0',   // hairlines and borders
+          ocean:  '#0E7FA8',   // THE accent — buttons, links, active states
+          sky:    '#1B93BF',   // accent, hover only
+          aqua:   '#D7E7EE',   // accent at 15% — tint fills
+          foam:   '#EFEDE8',   // neutral chip / tint fill
+          mist:   '#F7F6F3',   // surface two
+          sand:   '#F7F6F3',   // surface two (alias)
+          shell:  '#FFFFFF',   // surface one
+          coral:  '#1B93BF',   // alias -> accent hover
+          burn:   '#0E7FA8',   // alias -> accent
+          sun:    '#0E7FA8',   // alias -> accent
         },
       },
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'Times New Roman', 'serif'],
+        display: ['Inter', 'system-ui', 'sans-serif'],
         sans:    ['Inter', 'system-ui', 'sans-serif'],
         hand:    ['Caveat', 'cursive'],
       },
       boxShadow: {
         soft: '0 2px 6px rgba(15,62,88,.04), 0 14px 34px -14px rgba(15,62,88,.18)',
         lift: '0 4px 12px rgba(15,62,88,.06), 0 30px 60px -24px rgba(15,62,88,.32)',
-        sun:  '0 14px 34px -12px rgba(222,79,44,.55)',
-        blue: '0 14px 34px -12px rgba(14,127,168,.6)',
+        sun:  '0 14px 30px -14px rgba(15,62,88,.45)',   // alias -> neutral
+        blue: '0 14px 30px -14px rgba(15,62,88,.45)',   // alias -> neutral
       },
       maxWidth: { content: '80rem' },
     },
@@ -408,7 +412,7 @@ tailwind.config = {
   <div class="relative mx-auto grid max-w-content items-center gap-14 px-5 lg:grid-cols-[.9fr_1.1fr] lg:gap-20 lg:px-8">
 
     <div class="relative">
-      <div aria-hidden="true" class="absolute -inset-5 rotate-3 rounded-[2.75rem] bg-brand-aqua/35"></div>
+      <div aria-hidden="true" class="absolute -inset-5 rotate-3 rounded-[2.75rem] bg-brand-foam"></div>
       <?php if ($portrait): ?>
         <img src="<?= e($portrait) ?>" width="1080" height="1350" loading="lazy" decoding="async"
              alt="Philip Smith, licensed insurance agent and owner of <?= e($SITE['company']) ?>"
@@ -530,12 +534,12 @@ tailwind.config = {
         </article>
       <?php endforeach; ?>
 
-      <article class="on-blue flex flex-col justify-center gap-5 rounded-[1.75rem] bg-brand-navy p-8 text-white shadow-lift sm:flex-row sm:items-center sm:justify-between md:col-span-2 sm:p-9">
+      <article class="flex flex-col justify-center gap-5 rounded-[1.75rem] border border-brand-ocean/20 bg-brand-aqua/50 p-8 sm:flex-row sm:items-center sm:justify-between md:col-span-2 sm:p-9">
         <div>
-          <p class="font-display text-[1.3rem] font-bold leading-snug">Not sure which of these you actually need?</p>
-          <p class="mt-2 leading-relaxed text-white/75">That is exactly what the first conversation is for &mdash; and it costs you nothing.</p>
+          <p class="font-display text-[1.3rem] font-bold leading-snug text-brand-navy">Not sure which of these you actually need?</p>
+          <p class="mt-2 leading-relaxed text-brand-slate">That is exactly what the first conversation is for &mdash; and it costs you nothing.</p>
         </div>
-        <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-sun px-6 py-3.5 font-bold text-brand-navy transition hover:-translate-y-0.5 hover:bg-white">
+        <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-ocean px-6 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
           Ask me <?= icon('arrow', 'h-5 w-5') ?>
         </a>
       </article>
@@ -557,8 +561,8 @@ tailwind.config = {
           Everyone starts with Original Medicare &mdash; Parts A and B. From there you take one road, and that single choice shapes every cost that follows. Here is the short version.
         </p>
       </div>
-      <?= photo('medicare-101.jpg', 'Philip explaining Medicare options to a client at a table',
-                'aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-lift', 'Philip explaining the options') ?>
+      <?= photo('medicare-101.jpg', 'Happy senior couple enjoying peace of mind with their Medicare coverage',
+                'aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Coverage Peace of Mind') ?>
     </div>
 
     <!-- The four parts, one line each -->
@@ -599,11 +603,11 @@ tailwind.config = {
       </div>
     </div>
 
-    <div class="mt-5 flex flex-col items-start gap-5 rounded-[1.5rem] bg-brand-ocean p-8 text-white shadow-blue sm:flex-row sm:items-center sm:justify-between on-blue">
-      <p class="max-w-2xl text-[1.2rem] font-semibold leading-snug">
+    <div class="mt-5 flex flex-col items-start gap-5 rounded-[1.5rem] border border-brand-ocean/20 bg-brand-aqua/50 p-8 sm:flex-row sm:items-center sm:justify-between">
+      <p class="max-w-2xl text-[1.2rem] font-semibold leading-snug text-brand-navy">
         Want the whole thing in plain English? I'll post you a free Medicare 101 booklet &mdash; no salesperson attached to it.
       </p>
-      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-7 py-3.5 font-bold text-brand-ocean transition hover:-translate-y-0.5 hover:bg-brand-sun hover:text-brand-navy">
+      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-ocean px-7 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
         Send me the booklet <?= icon('arrow', 'h-5 w-5') ?>
       </a>
     </div>
@@ -643,22 +647,22 @@ tailwind.config = {
   </div>
 </section>
 
-<section class="relative overflow-hidden bg-brand-ocean py-14 text-white on-blue lg:py-20">
+<section class="relative overflow-hidden bg-brand-mist py-14 lg:py-20">
 
   <div class="relative mx-auto max-w-content px-5 lg:px-8">
     <div class="max-w-3xl">
-      <p class="eyebrow text-brand-sun">How it works</p>
-      <h2 class="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight sm:text-[3.2rem]">
+      <p class="eyebrow text-brand-ocean">How it works</p>
+      <h2 class="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-[3.2rem]">
         Three easy steps.<br class="hidden sm:block"> Then it's genuinely done.
       </h2>
     </div>
 
     <ol class="mt-10 grid gap-10 lg:grid-cols-3">
       <?php foreach ($steps as $s): ?>
-        <li class="border-t-2 border-white/35 pt-6">
-          <span class="font-display text-[3.6rem] font-bold leading-none text-brand-sun"><?= e($s[0]) ?></span>
-          <h3 class="mt-3 font-display text-[1.6rem] font-semibold leading-snug"><?= e($s[1]) ?></h3>
-          <p class="mt-3 leading-relaxed text-white/85"><?= e($s[2]) ?></p>
+        <li class="border-t-2 border-brand-ocean/30 pt-6">
+          <span class="font-display text-[3.6rem] font-bold leading-none text-brand-ocean"><?= e($s[0]) ?></span>
+          <h3 class="mt-3 font-display text-[1.6rem] font-semibold leading-snug text-brand-navy"><?= e($s[1]) ?></h3>
+          <p class="mt-3 leading-relaxed text-brand-slate"><?= e($s[2]) ?></p>
         </li>
       <?php endforeach; ?>
     </ol>
@@ -669,24 +673,60 @@ tailwind.config = {
 <section class="relative overflow-hidden bg-brand-sand py-16 lg:py-24">
 
   <div class="relative mx-auto max-w-content px-5 lg:px-8">
-    <div class="max-w-3xl">
-      <p class="eyebrow text-brand-burn">Kind words</p>
-      <h2 class="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-[3.2rem]">
-        Neighbours who finally <span class="mark-sun">understood their plan.</span>
-      </h2>
+
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <div class="max-w-2xl">
+        <p class="eyebrow text-brand-burn">Kind words</p>
+        <h2 class="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-[3.2rem]">
+          Neighbours who finally <span class="mark-sun">understood their plan.</span>
+        </h2>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-5">
+        <div class="hidden items-center gap-3 rounded-full border border-brand-navy/10 bg-white px-5 py-3 shadow-soft sm:flex">
+          <span class="flex gap-0.5 text-brand-sun"><?= str_repeat(star('h-5 w-5'), 5) ?></span>
+          <span class="text-[0.98rem] font-bold leading-tight text-brand-navy">
+            Most new clients<span class="block font-medium text-brand-slate">arrive by referral</span>
+          </span>
+        </div>
+
+        <div id="reviewNav" class="flex shrink-0 items-center gap-2">
+          <button type="button" data-slide="prev" aria-label="Previous testimonials"
+                  class="slider-btn grid h-12 w-12 place-items-center rounded-full border border-brand-navy/15 bg-white text-brand-ocean transition hover:border-brand-ocean hover:bg-brand-ocean hover:text-white">
+            <?= icon('arrow', 'h-5 w-5 rotate-180') ?>
+          </button>
+          <button type="button" data-slide="next" aria-label="More testimonials"
+                  class="slider-btn grid h-12 w-12 place-items-center rounded-full border border-brand-navy/15 bg-white text-brand-ocean transition hover:border-brand-ocean hover:bg-brand-ocean hover:text-white">
+            <?= icon('arrow', 'h-5 w-5') ?>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- TODO: replace with real, permissioned reviews before launch -->
-    <div class="mt-10 grid gap-x-14 gap-y-10 lg:grid-cols-3">
+    <div id="reviewTrack" class="slider-track mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2"
+         tabindex="0" role="group" aria-label="Client testimonials, scrollable">
       <?php foreach ($reviews as $ri => $r): ?>
-        <figure class="border-t-2 border-brand-navy/15 pt-7">
-          <div class="flex gap-1 text-brand-sun"><?= str_repeat(star('h-5 w-5'), 5) ?></div>
-          <blockquote class="mt-4 font-display text-[1.3rem] font-medium leading-relaxed text-brand-navy">&ldquo;<?= e($r[0]) ?>&rdquo;</blockquote>
-          <figcaption class="mt-6 flex items-center gap-3.5">
+        <figure class="group relative flex w-[85%] shrink-0 snap-start flex-col rounded-[1.6rem] bg-white p-7 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:w-[calc((100%-1.5rem)/2)] sm:p-8 lg:w-[calc((100%-3rem)/3)]">
+
+          <span aria-hidden="true" class="pointer-events-none absolute bottom-3 right-6 font-display text-[5.5rem] leading-none text-brand-aqua/25 transition duration-300 group-hover:text-brand-aqua/40">&rdquo;</span>
+
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <span class="flex gap-0.5 text-brand-sun"><?= str_repeat(star('h-[1.15rem] w-[1.15rem]'), 5) ?></span>
+            <span class="rounded-full bg-brand-foam px-3 py-1.5 text-[0.76rem] font-bold uppercase tracking-[0.08em] text-brand-ocean">
+              <?= e($r[3]) ?>
+            </span>
+          </div>
+
+          <blockquote class="relative mt-5 font-display text-[1.22rem] font-medium leading-relaxed text-brand-navy">
+            <?= e($r[0]) ?>
+          </blockquote>
+
+          <figcaption class="relative mt-auto flex items-center gap-3.5 pt-7">
             <?= avatar('review-' . ($ri + 1) . '.jpg', $r[1], 'h-12 w-12') ?>
             <span class="text-[1rem] leading-snug">
-              <span class="block font-bold text-brand-navy"><?= e($r[1]) ?></span>
-              <span class="block text-brand-slate"><?= e($r[2]) ?> &middot; <?= e($r[3]) ?></span>
+              <span class="block whitespace-nowrap font-bold text-brand-navy"><?= e($r[1]) ?></span>
+              <span class="block text-[0.95rem] text-brand-slate"><?= e($r[2]) ?></span>
             </span>
           </figcaption>
         </figure>
@@ -710,8 +750,8 @@ tailwind.config = {
       <a href="tel:<?= e($SITE['phone_raw']) ?>" class="mt-7 inline-flex items-center gap-3 rounded-full bg-brand-ocean px-7 py-4 font-bold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-brand-sky">
         <?= icon('phone', 'h-5 w-5') ?> Ask me directly
       </a>
-      <?= photo('philip-office.jpg', 'Philip at his desk, on the phone with a client',
-                'mt-10 hidden aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-lift lg:block', 'Philip at his desk') ?>
+      <?= photo('other/insurance-faq.jpg', 'Medicare insurance consultation with a client reviewing options',
+                'mt-10 block aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Consultation') ?>
     </div>
 
     <div>
@@ -749,51 +789,51 @@ tailwind.config = {
 </main>
 
 <!-- ═════════════════ FOOTER ═════════════════ -->
-<footer class="on-blue bg-brand-ocean text-white">
+<footer class="border-t border-brand-line bg-brand-mist text-brand-slate">
   <div class="mx-auto max-w-content px-5 py-16 lg:px-8">
 
     <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
       <div>
         <img src="<?= e($SITE['logo']) ?>" alt="<?= e($SITE['logo_alt']) ?>" width="1080" height="280"
-             loading="lazy" class="site-logo site-logo--light h-11 w-auto">
-        <p class="mt-5 max-w-sm leading-relaxed text-white/90">
+             loading="lazy" class="site-logo h-11 w-auto">
+        <p class="mt-5 max-w-sm leading-relaxed text-brand-slate">
           Independent, licensed Medicare guidance for <?= e($SITE['service_area']) ?>. Free help, honest answers, and someone who still picks up the phone in February.
         </p>
-        <p class="mt-5 text-[0.95rem] text-white/70"><?= e($SITE['license']) ?></p>
+        <p class="mt-5 text-[0.95rem] text-brand-slate"><?= e($SITE['license']) ?></p>
       </div>
 
       <nav aria-label="Footer">
-        <h2 class="font-display text-[1.15rem] font-semibold">Explore</h2>
-        <ul class="mt-4 space-y-2.5 text-white/90">
+        <h2 class="font-display text-[1.15rem] font-semibold text-brand-navy">Explore</h2>
+        <ul class="mt-4 space-y-2.5 text-brand-slate">
           <?php foreach ($nav as $href => $label): ?>
-            <li><a href="<?= e($href) ?>" class="hover:text-brand-sun"><?= e($label) ?></a></li>
+            <li><a href="<?= e($href) ?>" class="hover:text-brand-ocean"><?= e($label) ?></a></li>
           <?php endforeach; ?>
         </ul>
       </nav>
 
       <div>
-        <h2 class="font-display text-[1.15rem] font-semibold">Get in touch</h2>
-        <ul class="mt-4 space-y-3 text-white/90">
-          <li class="flex items-start gap-3"><?= icon('phone', 'mt-1 h-5 w-5 shrink-0 text-brand-sun') ?><a href="tel:<?= e($SITE['phone_raw']) ?>" class="font-bold text-white hover:text-brand-sun"><?= e($SITE['phone']) ?></a></li>
-          <li class="flex items-start gap-3"><?= icon('mail', 'mt-1 h-5 w-5 shrink-0 text-brand-sun') ?><a href="mailto:<?= e($SITE['email']) ?>" class="break-all hover:text-brand-sun"><?= e($SITE['email']) ?></a></li>
-          <li class="flex items-start gap-3"><?= icon('pin', 'mt-1 h-5 w-5 shrink-0 text-brand-sun') ?><span><?= e($SITE['address_line']) ?></span></li>
-          <li class="flex items-start gap-3"><?= icon('clock', 'mt-1 h-5 w-5 shrink-0 text-brand-sun') ?><span><?= e($SITE['hours']) ?></span></li>
+        <h2 class="font-display text-[1.15rem] font-semibold text-brand-navy">Get in touch</h2>
+        <ul class="mt-4 space-y-3 text-brand-slate">
+          <li class="flex items-start gap-3"><?= icon('phone', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><a href="tel:<?= e($SITE['phone_raw']) ?>" class="font-bold text-brand-navy hover:text-brand-ocean"><?= e($SITE['phone']) ?></a></li>
+          <li class="flex items-start gap-3"><?= icon('mail', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><a href="mailto:<?= e($SITE['email']) ?>" class="break-all hover:text-brand-ocean"><?= e($SITE['email']) ?></a></li>
+          <li class="flex items-start gap-3"><?= icon('pin', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><span><?= e($SITE['address_line']) ?></span></li>
+          <li class="flex items-start gap-3"><?= icon('clock', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><span><?= e($SITE['hours']) ?></span></li>
         </ul>
       </div>
     </div>
 
     <!-- Medicare marketing disclaimers -->
-    <div class="mt-14 space-y-3 border-t border-white/25 pt-8 text-[0.92rem] leading-relaxed text-white/80">
-      <p>We do not offer every plan available in your area. Any information we provide is limited to those plans we do offer in your area. Please contact <a href="https://www.medicare.gov" class="underline hover:text-brand-sun">Medicare.gov</a> or 1-800-MEDICARE (TTY 1-877-486-2048), 24 hours a day / 7 days a week, to get information on all of your options.</p>
+    <div class="mt-14 space-y-3 border-t border-brand-line pt-8 text-[0.92rem] leading-relaxed text-brand-slate">
+      <p>We do not offer every plan available in your area. Any information we provide is limited to those plans we do offer in your area. Please contact <a href="https://www.medicare.gov" class="underline hover:text-brand-ocean">Medicare.gov</a> or 1-800-MEDICARE (TTY 1-877-486-2048), 24 hours a day / 7 days a week, to get information on all of your options.</p>
       <p>Not connected with or endorsed by the United States government or the federal Medicare program. This is a solicitation for insurance. A licensed insurance agent may contact you.</p>
       <p>Enrollment in a plan may be limited to certain times of the year unless you qualify for a Special Enrollment Period.</p>
     </div>
 
-    <div class="mt-8 flex flex-col gap-3 border-t border-white/25 pt-8 text-[0.92rem] text-white/75 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-8 flex flex-col gap-3 border-t border-brand-line pt-8 text-[0.92rem] text-brand-slate sm:flex-row sm:items-center sm:justify-between">
       <p>&copy; <?= $year ?> <?= e($SITE['brand']) ?>. All rights reserved.</p>
       <p class="flex gap-5">
-        <a href="#" class="hover:text-brand-sun">Privacy Policy</a>
-        <a href="#" class="hover:text-brand-sun">Accessibility</a>
+        <a href="#" class="hover:text-brand-ocean">Privacy Policy</a>
+        <a href="#" class="hover:text-brand-ocean">Accessibility</a>
       </p>
     </div>
   </div>
@@ -852,6 +892,42 @@ tailwind.config = {
   }
   toggle.addEventListener('click', function () { setNav(menu.classList.contains('hidden')); });
   menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
+
+  /* ---------- Testimonial slider ---------- */
+  var track = document.getElementById('reviewTrack'),
+      revNav = document.getElementById('reviewNav');
+
+  if (track && revNav) {
+    var revBtns = revNav.querySelectorAll('[data-slide]');
+
+    function step() {
+      var card = track.firstElementChild;
+      return card ? card.getBoundingClientRect().width + 24 : track.clientWidth;
+    }
+
+    function paintSlider() {
+      // Nothing to scroll (three cards on a wide screen) — hide the arrows.
+      // Inline style, because the utility class on the wrapper sets display.
+      var overflow = track.scrollWidth - track.clientWidth;
+      revNav.style.display = overflow < 8 ? 'none' : 'flex';
+
+      var atStart = track.scrollLeft < 8,
+          atEnd   = track.scrollLeft >= overflow - 8;
+      revBtns.forEach(function (b) {
+        b.disabled = b.dataset.slide === 'prev' ? atStart : atEnd;
+      });
+    }
+
+    revBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        track.scrollBy({ left: b.dataset.slide === 'prev' ? -step() : step(), behavior: reduce ? 'auto' : 'smooth' });
+      });
+    });
+
+    track.addEventListener('scroll', paintSlider, { passive: true });
+    addEventListener('resize', paintSlider);
+    paintSlider();
+  }
 
   /* ---------- Text size preference ---------- */
   var SIZES = ['', 'fs-lg', 'fs-xl'], fsBtns = document.querySelectorAll('[data-fs]');
