@@ -1,0 +1,195 @@
+/* ------------------------------------------------------------------
+   Philip Smith — Medicare & Senior Benefits
+   Bright coastal theme. Thin hand-written layer on top of Tailwind.
+   ------------------------------------------------------------------ */
+
+/* Senior-friendly base size. The A / A+ / A++ control in the top bar
+   swaps these classes, and every Tailwind rem value scales with it. */
+html            { font-size: 17px; scroll-behavior: smooth; }
+html.fs-lg      { font-size: 19px; }
+html.fs-xl      { font-size: 21px; }
+
+body            { -webkit-tap-highlight-color: rgba(14, 127, 168, .18); }
+
+/* Leave room for the sticky header when jumping to an anchor. */
+:target,
+section[id]     { scroll-margin-top: 6rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html          { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* High-contrast focus ring for keyboard and low-vision visitors. */
+:focus-visible {
+  outline: 3px solid #0E7FA8;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.on-blue :focus-visible { outline-color: #FFC24B; }
+
+/* ---- Modern typography ------------------------------------------- */
+body            { font-feature-settings: 'cv02','cv03','cv04','cv11'; }
+/* Fraunces is a variable serif: SOFT rounds the terminals a little, WONK off
+   keeps the letterforms straight. Serifs need far less negative tracking
+   than the sans it replaced. */
+.font-display {
+  letter-spacing: -0.012em;
+  font-weight: 700;
+  font-variation-settings: 'SOFT' 30, 'WONK' 0;
+}
+h1.font-display { letter-spacing: -0.018em; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .82rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+}
+.eyebrow::before {
+  content: ''; width: 1.75rem; height: 2px; background: currentColor; flex: none; opacity: .9;
+}
+
+/* Pill buttons: the icon nudges forward on hover. */
+a[class*="rounded-full"] svg,
+button[class*="rounded-full"] svg { transition: transform .25s cubic-bezier(.22,1,.36,1); }
+a[class*="rounded-full"]:hover svg,
+button[class*="rounded-full"]:hover svg { transform: translateX(3px); }
+
+/* ---- Carrier logo marquee ---------------------------------------- */
+/* Two identical runs of logos; the track slides exactly one run, then
+   snaps back — the spacing lives on the items so the loop is seamless. */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+.marquee__track > li { flex: none; margin-right: 4.5rem; }
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.carrier-logo {
+  height: 2.1rem;
+  width: auto;
+  opacity: .85;
+  filter: brightness(0) invert(1);   /* the source files are black on transparent */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee        { overflow-x: auto; }
+  .marquee__track { animation: none; }
+}
+
+/* ---- Header: a floating glass capsule that solidifies on scroll ----
+   Two states live here. Transparent: the bar rides the hero photograph as
+   frosted glass. Solid (.is-solid, set by JS past 80px): it turns white and
+   tightens up. Everything transitions, so the swap reads as one motion.   */
+#siteTop .headerbar {
+  border-radius: 1.6rem;
+  border: 1px solid rgba(255,255,255,.22);
+  background-color: rgba(255,255,255,.10);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+          backdrop-filter: blur(16px) saturate(140%);
+  transition: background-color .35s ease, border-color .35s ease,
+              box-shadow .35s ease, border-radius .35s ease;
+}
+/* The logo file is black on transparency: flip it white over the photo,
+   leave it as drawn once the bar turns white. Same flip in the footer. */
+.site-logo              { transition: filter .35s ease; }
+.site-logo--light,
+#siteTop .site-logo     { filter: brightness(0) invert(1); }
+#siteTop.is-solid .site-logo { filter: none; }
+#siteTop .nav-pill   { background-color: rgba(255,255,255,.10); }
+#siteTop .nav-link   { color: rgba(255,255,255,.92); }
+#siteTop .nav-link:hover        { background-color: rgba(255,255,255,.18); color: #ffffff; }
+#siteTop .nav-link.is-active    { background-color: rgba(255,255,255,.92); color: #0F3E58; }
+#siteTop .phone-chip { color: #ffffff; background-color: rgba(255,255,255,.12); }
+#siteTop .phone-chip:hover { background-color: rgba(255,255,255,.22); }
+#siteTop .menu-btn   { border-color: rgba(255,255,255,.4); color: #ffffff; }
+
+/* Solid state. */
+#siteTop.is-solid .headerbar {
+  background-color: rgba(255,255,255,.9);
+  border-color: #DCEAF1;
+  box-shadow: 0 18px 44px -30px rgba(15,62,88,.65);
+}
+#siteTop.is-solid .nav-pill   { background-color: #F4FBFD; }
+#siteTop.is-solid .nav-link   { color: rgba(23,59,76,.82); }
+#siteTop.is-solid .nav-link:hover     { background-color: #E6F6FB; color: #0E7FA8; }
+#siteTop.is-solid .nav-link.is-active { background-color: #0E7FA8; color: #ffffff; }
+#siteTop.is-solid .phone-chip { color: #0E7FA8; background-color: #E6F6FB; }
+#siteTop.is-solid .phone-chip:hover { background-color: #D6EEF7; }
+#siteTop.is-solid .menu-btn   { border-color: #DCEAF1; color: #0E7FA8; }
+
+/* Mobile sheet: a card tucked inside the capsule. */
+.mobile-sheet {
+  margin: 0 -.25rem .5rem;
+  padding: .5rem;
+  border-radius: 1.25rem;
+  background-color: #ffffff;
+  box-shadow: 0 20px 50px -30px rgba(15,62,88,.7);
+}
+
+/* ---- Headline treatments ----------------------------------------- */
+/* Solid sunlit band behind a key word — no gradients anywhere in this theme. */
+.mark-sun {
+  box-shadow: inset 0 -.24em 0 rgba(255, 194, 75, .6);
+  padding: 0 .08em;
+}
+/* The loudest words, in ocean blue. */
+.text-tide { color: #0E7FA8; }
+
+/* ---- FAQ accordion (native <details>) ---------------------------- */
+details.faq > summary                          { list-style: none; cursor: pointer; }
+details.faq > summary::-webkit-details-marker  { display: none; }
+details.faq[open] .faq-chevron                 { transform: rotate(180deg); }
+.faq-chevron                                   { transition: transform .25s ease; }
+
+/* ---- Tabs (Medicare 101) ----------------------------------------- */
+.tab-btn[aria-selected="true"] {
+  background-color: #0E7FA8;
+  color: #ffffff;
+  box-shadow: 0 10px 24px -12px rgba(14,127,168,.85);
+}
+.tab-btn[aria-selected="true"] .tab-letter { background-color: #FFC24B; color: #0F3E58; }
+
+/* ---- Animation ---------------------------------------------------- */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise .65s cubic-bezier(.22,1,.36,1) both; }
+
+@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.floaty { animation: floaty 6s ease-in-out infinite; }
+
+/* ---- Form fields --------------------------------------------------- */
+.field {
+  width: 100%;
+  border-radius: .85rem;
+  border: 2px solid #DCEAF1;
+  background-color: #ffffff;
+  padding: .85rem 1rem;
+  font-size: 1.0625rem;
+  color: #173B4C;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field::placeholder { color: #93AEBB; }
+.field:hover        { border-color: #9FD3E8; }
+.field:focus {
+  border-color: #0E7FA8;
+  box-shadow: 0 0 0 4px rgba(14,127,168,.15);
+  outline: none;
+}
+.field-error        { border-color: #DE4F2C; background-color: #FFF4F1; }
+
+/* ---- Print --------------------------------------------------------- */
+@media print {
+  .no-print { display: none !important; }
+  body      { background: #fff; }
+}
