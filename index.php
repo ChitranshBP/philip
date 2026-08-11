@@ -71,55 +71,58 @@ $services = [
     ['Dental, Vision & Hearing',       'The cleanings, glasses and hearing aids Medicare will not pay for.'],
 ];
 
-/* ---- Medicare 101 tabs ------------------------------------------ */
+/* ---- Medicare 101 ------------------------------------------------ *
+ * Facts checked against Philip's own client notes. Deliberately no
+ * dollar figures: CMS resets them every year and stale numbers on a
+ * page are worse than none. Philip quotes live figures on the call.   */
 $parts = [
     [
         'letter' => 'A', 'name' => 'Hospital Insurance',
         'tag'    => 'Original Medicare',
-        'lead'   => 'The part that catches you when you are admitted.',
-        'covers' => ['Inpatient hospital stays', 'Skilled nursing facility care after a qualifying stay', 'Hospice care', 'Some home health care'],
+        'lead'   => 'The hospital half. Most people have already paid for it.',
+        'covers' => ['Inpatient hospital care', 'Skilled nursing facility care after a qualifying stay', 'Home health care', 'Hospice care'],
         'facts'  => [
             ['Who provides it', 'The federal government'],
-            ['What you pay',    'No premium for most people, then a deductible per benefit period'],
-            ['When to enrol',   'Automatic if you already draw Social Security'],
+            ['What you pay',    'No premium if you have 40+ working quarters, then a deductible per benefit period'],
+            ['When to enrol',   'Automatic if you already draw Social Security or SSDI'],
         ],
-        'watch'  => 'Most people pay no premium if they or a spouse paid Medicare taxes for roughly ten years. There is still a deductible for each benefit period, and it is not once a year — it can apply more than once in twelve months.',
+        'watch'  => 'Forty working quarters is about ten years of paying Medicare taxes — yours or a spouse\'s. You also need to be a citizen or a lawful resident of five years. The deductible applies per benefit period, not per year, so a bad twelve months can trigger it more than once.',
     ],
     [
         'letter' => 'B', 'name' => 'Medical Insurance',
         'tag'    => 'Original Medicare',
-        'lead'   => 'The part that handles everything outside the hospital bed.',
-        'covers' => ['Doctor and specialist visits', 'Outpatient surgery and lab work', 'Preventive screenings and annual wellness visits', 'Durable medical equipment'],
+        'lead'   => 'Everything outside the hospital bed — and the 20% nobody mentions.',
+        'covers' => ['Doctors, specialists and providers', 'Diagnostic and outpatient services', 'Durable medical equipment', 'Preventive screenings, shots and vaccines'],
         'facts'  => [
             ['Who provides it', 'The federal government'],
             ['What you pay',    'A monthly premium, an annual deductible, then 20% of most services'],
-            ['When to enrol',   'Your initial window, or a Special window if you have employer cover'],
+            ['When to enrol',   'Your 7-month initial window, or a Special window if you have employer cover'],
         ],
-        'watch'  => 'Part B has a monthly premium and generally pays 80% after the annual deductible — leaving you the other 20% with no cap. Higher-income households pay an extra amount called IRMAA. That uncapped 20% is exactly what a Supplement or an Advantage plan exists to handle.',
+        'watch'  => 'A and B together cover about 80% of your care. The remaining 20% has no ceiling at all — one serious year can run into five figures. That gap is the entire reason Part C and Medigap exist. Higher-income households also pay an IRMAA surcharge, based on a tax return from two years ago.',
     ],
     [
         'letter' => 'C', 'name' => 'Medicare Advantage',
         'tag'    => 'One private plan',
-        'lead'   => 'One private plan that takes over A and B, usually with extras.',
-        'covers' => ['Everything Parts A and B cover', 'Usually Part D drug coverage built in', 'Often dental, vision, hearing and fitness', 'A yearly cap on what you can spend'],
+        'lead'   => 'One private plan that replaces A and B, usually with extras.',
+        'covers' => ['Everything Parts A and B cover', 'Usually a Part D drug plan built in', 'Dental, vision, hearing, fitness, transport and OTC allowances', 'A maximum out-of-pocket that caps your year'],
         'facts'  => [
-            ['Who provides it', 'A private insurance carrier, approved by Medicare'],
-            ['What you pay',    'Your Part B premium, often a $0 plan premium, then copays up to a yearly cap'],
+            ['Who provides it', 'A private carrier approved by Medicare'],
+            ['What you pay',    'Your Part B premium, often a $0 plan premium, then copays up to the yearly cap'],
             ['When to enrol',   'Your initial window, or 15 October – 7 December each year'],
         ],
-        'watch'  => 'You still pay your Part B premium. Care runs through a network, so the plan is only as good as whether your doctors are in it — and networks are redrawn every January. Some plans require referrals or prior authorisation.',
+        'watch'  => 'There are hundreds of these plans and no two counties see the same list — some are income-based, others are built around a chronic condition. Nobody can quote you a copay without knowing your ZIP code. The real protection is the maximum out-of-pocket; the dental and fitness extras are what sell it.',
     ],
     [
         'letter' => 'D', 'name' => 'Prescription Drugs',
         'tag'    => 'Add-on cover',
-        'lead'   => 'The part everybody underestimates until January.',
-        'covers' => ['Retail and mail-order prescriptions', 'A formulary of covered drugs, arranged in tiers', 'An annual cap on your out-of-pocket drug spending', 'Preferred pharmacy pricing'],
+        'lead'   => 'The part that is never automatic — and penalised for life if you skip it.',
+        'covers' => ['Retail and mail-order prescriptions', 'A formulary of covered drugs, arranged in tiers', 'Shots and vaccines', 'An annual cap on what you spend on covered drugs'],
         'facts'  => [
-            ['Who provides it', 'A private carrier — standalone, or built into an Advantage plan'],
+            ['Who provides it', 'Private carriers following Medicare\'s rules'],
             ['What you pay',    'A monthly premium, then a copay set by your drug\'s tier'],
-            ['When to enrol',   'Your initial window, or 15 October – 7 December each year'],
+            ['When to enrol',   'With Parts A and B, or 15 October – 7 December each year'],
         ],
-        'watch'  => 'Two plans with identical premiums can differ by thousands a year depending on how they tier your specific drugs. Delay Part D without other creditable coverage and a late-enrolment penalty is added to your premium for life.',
+        'watch'  => 'Nobody enrols you into a drug plan — you have to choose one, or have other creditable coverage. Skip it and the late-enrolment penalty is added to your premium for the rest of your life. Two plans with the same premium can differ by thousands depending on how they tier your specific drugs.',
     ],
 ];
 
@@ -127,21 +130,17 @@ $parts = [
 $roads = [
     [
         'label' => 'Road one',
-        'title' => 'Original Medicare + a Supplement',
-        'items' => ['Parts A and B stay as they are', 'A Medigap policy pays the share Medicare leaves you', 'Add a standalone Part D drug plan', 'Add dental, vision and hearing separately if you want them'],
-        'note'  => 'Maximum freedom, a predictable monthly premium.',
+        'title' => 'Original Medicare + a Medigap',
+        'items' => ['Parts A and B stay exactly as they are', 'A Medigap policy pays the share Medicare leaves you', 'Add a standalone Part D drug plan', 'Any provider in the country who takes Medicare'],
+        'note'  => 'A set monthly premium, almost nothing at the counter.',
     ],
     [
         'label' => 'Road two',
-        'title' => 'A Medicare Advantage plan',
-        'items' => ['One private plan delivers your Part A and Part B', 'Drug coverage is usually built in', 'Extras such as dental, vision and fitness often included', 'Costs are capped by a yearly out-of-pocket maximum'],
-        'note'  => 'Lower monthly cost, care within a network.',
+        'title' => 'A Medicare Advantage plan (Part C)',
+        'items' => ['One private plan delivers your Part A and Part B', 'Drug coverage is usually built in', 'Dental, vision, hearing, fitness and OTC extras', 'A maximum out-of-pocket caps your worst year'],
+        'note'  => 'Often a $0 plan premium, care inside a network.',
     ],
 ];
-
-/* NOTE: the long-form Medicare 101 content (Part D stages, coverage gaps, the
-   Advantage vs Medigap comparison table) lives in inc/data.php, ready for the
-   dedicated Medicare 101 page. The home page keeps only the short version. */
 
 /* ---- Costly mistakes --------------------------------------------- */
 $mistakes = [
@@ -168,26 +167,47 @@ $reviews = [
 
 /* ---- Glossary ------------------------------------------------------ */
 $glossary = [
+    ['IEP',           'Initial Enrollment Period — your seven-month window: three months before your 65th birthday month, the month itself, three months after.'],
+    ['GEP',           'General Enrollment Period — 1 January to 31 March, the catch-up window if you missed your IEP.'],
+    ['AEP',           'Annual Enrollment Period — 15 October to 7 December, when you change Advantage and drug plans. Not the same as the GEP.'],
+    ['LEP',           'Late Enrollment Penalty — a permanent surcharge for missing your window on Part B or Part D.'],
+    ['MOOP',          'Maximum out-of-pocket — the yearly ceiling on your costs in an Advantage plan. Original Medicare has none.'],
+    ['Working quarter', 'Three months of paying Medicare taxes. Forty of them, yours or a spouse\'s, earn premium-free Part A.'],
     ['Formulary',     'The list of prescription drugs a plan covers, sorted into price tiers.'],
-    ['Network',       'The doctors, hospitals and pharmacies a plan has contracted with.'],
-    ['MOOP',          'Maximum out-of-pocket — the yearly ceiling on your costs in an Advantage plan.'],
-    ['IRMAA',         'An income-related surcharge added to Part B and Part D for higher earners.'],
-    ['Creditable coverage', 'Other drug coverage at least as good as Part D, which protects you from the late penalty.'],
+    ['Network',       'The doctors, hospitals and pharmacies an Advantage plan has contracted with.'],
+    ['Creditable coverage', 'Other coverage at least as good as Medicare\'s, which protects you from the late penalty while you delay.'],
+    ['IRMAA',         'An income-related surcharge added to Part B and Part D for higher earners, based on a tax return from two years ago.'],
     ['ANOC',          'Annual Notice of Change — the September letter listing what your plan is altering in January.'],
     ['Extra Help',    'A federal programme that lowers prescription costs for people with limited income and resources.'],
-    ['Guaranteed issue', 'A situation where a Supplement carrier must accept you regardless of health history.'],
 ];
 
 $faqs = [
-    ['What does your help cost me?', 'Nothing — not a dollar. I am compensated by whichever carrier you choose, and your premium is identical whether you enrol through me, online, or over the phone with the company directly. What you get at no charge is somebody who reads the fine print beside you.'],
-    ['Do I have to change my plan?', 'No, and plenty of my reviews end with me saying "stay exactly where you are." If what you have is genuinely the best fit, my job is to tell you so and put it in writing.'],
-    ['Which companies do you work with?', 'I am appointed with most of the major national and regional carriers serving this area, which lets me compare rather than sell one brand. I do not offer every plan available — you can always reach 1-800-MEDICARE or visit Medicare.gov to review all of your options.'],
-    ['I am still working and becoming eligible. What should I do?', 'Call me about three months before your eligibility date. Whether you should take Part B now or delay it depends on how many people your employer covers and how good the drug coverage is. Getting this wrong creates a lifelong penalty, so it is worth one short conversation.'],
-    ['What should I have ready when we talk?', 'Your red-white-and-blue Medicare card if you have one, a list of your prescriptions with dosages, and the names of the doctors you would like to keep. That is enough for me to do real work on your behalf.'],
-    ['Can you help my spouse, or my parents?', 'Absolutely — most of my appointments are with couples, and I regularly work with adult children helping a parent sort this out from another state.'],
-    ['Do we have to meet in person?', 'Entirely your choice. I meet people at home, at my office, or over the phone and video, whichever is easiest. Nothing is signed until you are ready.'],
-    ['What actually happens after I enrol?', 'I stay your agent for as long as you would like me. Call me first when a bill looks wrong or an ID card does not arrive. Every autumn I re-check your plan against the coming year, free of charge.'],
-    ['Is my information safe with you?', 'Yes. Your details go to the carrier you choose and nowhere else. I do not sell, share or trade lead lists, which is the reason your phone will not start ringing after we speak.'],
+    ['Am I eligible for Medicare?',
+     'Most people qualify at 65 if they are a US citizen or have been a lawful resident for five years. If you or your spouse paid Medicare taxes for 40+ working quarters — roughly ten years — Part A costs you no premium. You can also qualify before 65: after 24 months on Social Security Disability, immediately with ALS, or from the fourth month of dialysis with end-stage renal disease. Marriage and work history can change the answer, so ring me and we will work out your exact position.'],
+
+    ['When exactly should I sign up?',
+     'Your Initial Enrollment Period is a seven-month window: the three months before your 65th birthday month, the month itself, and the three months after. If you are already drawing Social Security or SSDI you are enrolled automatically. If you are not, nobody does it for you. Miss the window and you wait for the General Enrollment Period, 1 January to 31 March — which is not the same thing as the Annual Enrollment Period in the autumn, when you change Advantage and drug plans.'],
+
+    ['What is a late-enrolment penalty, really?',
+     'It is a permanent surcharge for missing a window you were eligible for. Two catch people out. Skip Part B without creditable employer coverage and the penalty rides on your premium for as long as you have Medicare. Skip a Part D drug plan — which is never automatic — and the same thing happens there. Neither penalty goes away, which is why one short conversation before your birthday is worth having.'],
+
+    ['Do I have to take Medicare at 65?',
+     'No. If you have genuinely creditable coverage, usually from a large employer, you can delay Part B without a penalty and pick it up later through a Special Enrollment Period. Whether your coverage counts depends on how many people your employer covers and how good the drug benefit is. Getting that judgement wrong creates a lifelong penalty, so call me about three months out and we will check it properly.'],
+
+    ['How do I actually enrol?',
+     'Parts A and B come from Social Security — their online application takes under ten minutes, and you do not have to be claiming income benefits to apply. That is the government half. Choosing what sits on top of it, an Advantage plan or a Medigap policy plus a drug plan, is where I come in, and there is no charge for that help.'],
+
+    ['What does your help cost me?',
+     'Nothing — not a dollar. I am paid by whichever carrier you choose, and your premium is identical whether you enrol through me, online, or on the phone with the company. What you get at no charge is somebody who reads the fine print beside you and picks up when you call in March.'],
+
+    ['Advantage or Medigap — which is right for me?',
+     'That is the real question, and it depends on your doctors, your prescriptions, your travel and your appetite for surprises. An Advantage plan usually costs little each month and caps your worst year, but care runs through a network. A Medigap costs a set premium and leaves almost nothing to pay at the counter, anywhere in the country that takes Medicare. I explain both honestly and let you decide.'],
+
+    ['Which Medigap letter should I buy?',
+     'The letter sets the coverage, not the company — a Plan G is a Plan G whichever carrier sells it, so the sensible question is who is charging least for it this year. Plan G is the practical top choice for most people today: it covers everything except the Part B deductible. Plan N costs less in exchange for small copays. Plan F is richer still, but it is closed to anyone who became eligible for Medicare on or after 1 January 2020.'],
+
+    ['Do I have to change what I already have?',
+     'No, and plenty of my reviews end with me saying stay exactly where you are. If what you hold is genuinely the best fit, my job is to tell you so. Each October I re-check your plan against the coming year anyway — free, whether you move or stay.'],
 ];
 
 $year = date('Y');
@@ -197,14 +217,14 @@ $year = date('Y');
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= e($SITE['brand']) ?> — Medicare Made Simple | <?= e($SITE['address']['city']) ?>, <?= e($SITE['address']['state']) ?></title>
-<meta name="description" content="Philip Smith is a licensed Medicare agent serving <?= e($SITE['service_area']) ?>. Concierge-level, no-cost help comparing Medicare Advantage, Supplement and Part D plans. Call <?= e($SITE['phone']) ?>.">
-<meta name="theme-color" content="#0E7FA8">
+<title><?= e($SITE['company']) ?> — <?= e($SITE['tagline']) ?> | <?= e($SITE['address']['city']) ?>, <?= e($SITE['address']['state']) ?></title>
+<meta name="description" content="<?= e($SITE['tagline']) ?> Philip Smith is a licensed Medicare agent serving <?= e($SITE['service_area']) ?>. No-cost help comparing Medicare Advantage, Supplement and Part D plans. Call <?= e($SITE['phone']) ?>.">
 <link rel="canonical" href="https://example.com/"><!-- TODO: real domain -->
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="<?= e($SITE['brand']) ?> — Medicare Made Simple, and Personal">
+<meta property="og:title" content="<?= e($SITE['company']) ?> — <?= e($SITE['tagline']) ?>">
 <meta property="og:description" content="Concierge Medicare guidance from a licensed local agent. Compare every option in one unhurried sitting.">
+<meta name="theme-color" content="#DD4541">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -216,25 +236,28 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        /* Five colours. Ink, two surfaces, a hairline, one accent.
-           The older names (sun, burn, coral, sand…) are kept as aliases
-           so the markup did not have to be rewritten wholesale — they all
-           resolve into the five. Do not reintroduce a sixth. */
+        /* TRUCARE BRAND
+           Red   #DD4541  accent — buttons, links, active states, rules
+           Cream #FFFAE3  the page ground
+           Black #14110F  all text
+           Plus white for cards and one hairline. Nothing else.
+           The old names (navy, ocean, sun, sand…) are kept as aliases so
+           the markup did not need rewriting — they all resolve into these. */
         brand: {
-          navy:   '#0F3E58',   // ink — all headings, dark surfaces
-          ink:    '#14313F',   // ink, a shade deeper for body emphasis
-          slate:  '#5A6E79',   // muted body text
-          line:   '#E7E5E0',   // hairlines and borders
-          ocean:  '#0E7FA8',   // THE accent — buttons, links, active states
-          sky:    '#1B93BF',   // accent, hover only
-          aqua:   '#D7E7EE',   // accent at 15% — tint fills
-          foam:   '#EFEDE8',   // neutral chip / tint fill
-          mist:   '#F7F6F3',   // surface two
-          sand:   '#F7F6F3',   // surface two (alias)
-          shell:  '#FFFFFF',   // surface one
-          coral:  '#1B93BF',   // alias -> accent hover
-          burn:   '#0E7FA8',   // alias -> accent
-          sun:    '#0E7FA8',   // alias -> accent
+          navy:   '#14110F',   // black — headings
+          ink:    '#14110F',   // black — body emphasis
+          slate:  '#5C554E',   // warm grey — muted body text
+          line:   '#E7DFC4',   // hairline on cream
+          ocean:  '#DD4541',   // THE accent
+          sky:    '#C3352F',   // accent, hover only
+          aqua:   '#F7DFDA',   // accent tint — soft fills
+          foam:   '#F6EFD2',   // cream, one step down — chips
+          mist:   '#FFFAE3',   // cream — the ground
+          sand:   '#FFFAE3',   // cream (alias)
+          shell:  '#FFFFFF',   // white — cards
+          coral:  '#C3352F',   // alias -> accent hover
+          burn:   '#DD4541',   // alias -> accent
+          sun:    '#DD4541',   // alias -> accent
         },
       },
       fontFamily: {
@@ -243,10 +266,10 @@ tailwind.config = {
         hand:    ['Caveat', 'cursive'],
       },
       boxShadow: {
-        soft: '0 2px 6px rgba(15,62,88,.04), 0 14px 34px -14px rgba(15,62,88,.18)',
-        lift: '0 4px 12px rgba(15,62,88,.06), 0 30px 60px -24px rgba(15,62,88,.32)',
-        sun:  '0 14px 30px -14px rgba(15,62,88,.45)',   // alias -> neutral
-        blue: '0 14px 30px -14px rgba(15,62,88,.45)',   // alias -> neutral
+        soft: '0 2px 6px rgba(40,30,20,.04), 0 14px 34px -14px rgba(40,30,20,.14)',
+        lift: '0 4px 12px rgba(40,30,20,.05), 0 30px 60px -24px rgba(40,30,20,.22)',
+        sun:  '0 14px 30px -14px rgba(40,30,20,.30)',   // alias -> neutral
+        blue: '0 14px 30px -14px rgba(40,30,20,.30)',   // alias -> neutral
       },
       maxWidth: { content: '80rem' },
     },
@@ -261,6 +284,7 @@ tailwind.config = {
   "@type": "InsuranceAgency",
   "name": "<?= e($SITE['brand'] . ' — ' . $SITE['brand_sub']) ?>",
   "description": "Licensed Medicare insurance agent providing concierge-level help comparing Medicare Advantage, Medicare Supplement and Part D plans.",
+  "slogan": "<?= e($SITE['tagline']) ?>",
   "telephone": "<?= e($SITE['phone']) ?>",
   "email": "<?= e($SITE['email']) ?>",
   "areaServed": "<?= e($SITE['service_area']) ?>",
@@ -277,7 +301,7 @@ tailwind.config = {
 </script>
 </head>
 
-<body class="bg-white font-sans text-[1.0625rem] leading-relaxed text-brand-ink antialiased">
+<body class="bg-brand-mist font-sans text-[1.0625rem] leading-relaxed text-brand-ink antialiased">
 
 <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-ocean focus:px-5 focus:py-3 focus:font-semibold focus:text-white">Skip to main content</a>
 
@@ -330,7 +354,7 @@ tailwind.config = {
 <section id="top" class="hero-dark relative isolate flex min-h-[44rem] items-center overflow-hidden lg:min-h-[50rem]">
 
   <!-- Background photograph (assets/bg-hero/philips-hero.png, or assets/img/hero-bg.jpg) -->
-  <div class="absolute inset-0 -z-20 bg-brand-navy">
+  <div class="absolute inset-0 -z-20 bg-brand-mist">
     <?php if ($heroBg): ?>
       <img src="<?= e($heroBg) ?>" alt="" aria-hidden="true" fetchpriority="high" decoding="async"
            class="h-full w-full object-cover object-[45%_center]">
@@ -343,12 +367,16 @@ tailwind.config = {
 
     <div class="max-w-3xl rise">
 
-      <h1 class="font-display text-[2.7rem] font-bold leading-[1.03] tracking-tight text-white sm:text-[3.4rem] lg:text-[4.1rem]">
-        Medicare, handled<br class="hidden sm:block"> like a <span class="text-brand-sun">concierge.</span>
+      <p class="text-[0.92rem] font-bold uppercase tracking-[0.2em] text-white/85">
+        <?= e($SITE['tagline']) ?>
+      </p>
+
+      <h1 class="mt-5 font-display text-[2.7rem] font-bold leading-[1.05] tracking-tight text-white sm:text-[3.4rem] lg:text-[4.1rem]">
+        Clear Advice From<br class="hidden sm:block"> Someone <span class="text-brand-sun">Who Answers</span>
       </h1>
 
-      <p class="mt-6 max-w-xl text-[1.15rem] leading-relaxed text-white/85">
-        I'm <strong class="font-semibold text-white"><?= e($SITE['agent_name']) ?></strong>. We find the plan that fits your doctors, your prescriptions and your budget &mdash; then I stay on as your agent.
+      <p class="mt-6 max-w-2xl text-[0.98rem] font-semibold uppercase leading-[1.7] tracking-[0.12em] text-white/85 sm:text-[1.05rem]">
+        We take the confusion out of Medicare and stay with you long after the paperwork is filed.
       </p>
 
       <div class="mt-8">
@@ -389,7 +417,7 @@ tailwind.config = {
   </div> -->
 
   <!-- Carrier logos, riding the bottom edge of the hero -->
-  <div class="absolute inset-x-0 bottom-0 z-10 border-t border-white/15 bg-brand-navy/35 py-6 backdrop-blur-md">
+  <div class="absolute inset-x-0 bottom-0 z-10 border-t border-white/50 bg-white/80 py-6 backdrop-blur-md">
     <h2 class="sr-only">Carriers I compare for you</h2>
     <div class="marquee">
       <ul class="marquee__track" role="list">
@@ -460,7 +488,7 @@ tailwind.config = {
       <p class="mt-1 text-[0.95rem] font-semibold text-brand-slate">Owner, <?= e($SITE['company']) ?> &nbsp;•&nbsp; <?= e($SITE['license']) ?></p>
 
       <div class="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4">
-        <p class="font-display text-[1.25rem] font-bold text-brand-navy">No jargon. No pressure. Just Trucare.</p>
+        <p class="font-display text-[1.25rem] font-bold text-brand-navy"><?= e($SITE['tagline']) ?></p>
         <?php if ($aboutUrl !== ''): ?>
           <a href="<?= e($aboutUrl) ?>" class="group inline-flex items-center gap-2 font-bold text-brand-ocean transition hover:text-brand-navy">
             Read Philip's full story
@@ -551,7 +579,7 @@ tailwind.config = {
 <section id="learn" class="relative overflow-hidden bg-white py-14 lg:py-20">
   <div class="mx-auto max-w-content px-5 lg:px-8">
 
-    <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
+    <div class="grid items-center gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
       <div>
         <p class="eyebrow text-brand-ocean">Medicare 101</p>
         <h2 class="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-navy sm:text-[3.2rem]">
@@ -562,7 +590,7 @@ tailwind.config = {
         </p>
       </div>
       <?= photo('medicare-101.jpg', 'Happy senior couple enjoying peace of mind with their Medicare coverage',
-                'aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Coverage Peace of Mind') ?>
+                'aspect-[16/10] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Coverage Peace of Mind') ?>
     </div>
 
     <!-- The four parts, one line each -->
@@ -647,7 +675,7 @@ tailwind.config = {
   </div>
 </section>
 
-<section class="relative overflow-hidden bg-brand-mist py-14 lg:py-20">
+<section class="relative overflow-hidden bg-brand-mist py-12 lg:py-16">
 
   <div class="relative mx-auto max-w-content px-5 lg:px-8">
     <div class="max-w-3xl">
@@ -657,12 +685,12 @@ tailwind.config = {
       </h2>
     </div>
 
-    <ol class="mt-10 grid gap-10 lg:grid-cols-3">
+    <ol class="mt-8 grid gap-8 lg:grid-cols-3">
       <?php foreach ($steps as $s): ?>
-        <li class="border-t-2 border-brand-ocean/30 pt-6">
-          <span class="font-display text-[3.6rem] font-bold leading-none text-brand-ocean"><?= e($s[0]) ?></span>
-          <h3 class="mt-3 font-display text-[1.6rem] font-semibold leading-snug text-brand-navy"><?= e($s[1]) ?></h3>
-          <p class="mt-3 leading-relaxed text-brand-slate"><?= e($s[2]) ?></p>
+        <li class="border-t-2 border-brand-ocean/30 pt-5">
+          <span class="font-display text-[2.6rem] font-bold leading-none text-brand-ocean"><?= e($s[0]) ?></span>
+          <h3 class="mt-2 font-display text-[1.4rem] font-semibold leading-snug text-brand-navy"><?= e($s[1]) ?></h3>
+          <p class="mt-2 leading-relaxed text-brand-slate"><?= e($s[2]) ?></p>
         </li>
       <?php endforeach; ?>
     </ol>
@@ -670,7 +698,7 @@ tailwind.config = {
 </section>
 
 <!-- ═════════════════ TESTIMONIALS ═════════════════ -->
-<section class="relative overflow-hidden bg-brand-sand py-16 lg:py-24">
+<section class="relative overflow-hidden bg-brand-sand py-12 lg:py-16">
 
   <div class="relative mx-auto max-w-content px-5 lg:px-8">
 
@@ -704,12 +732,12 @@ tailwind.config = {
     </div>
 
     <!-- TODO: replace with real, permissioned reviews before launch -->
-    <div id="reviewTrack" class="slider-track mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2"
+    <div id="reviewTrack" class="slider-track mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2"
          tabindex="0" role="group" aria-label="Client testimonials, scrollable">
       <?php foreach ($reviews as $ri => $r): ?>
-        <figure class="group relative flex w-[85%] shrink-0 snap-start flex-col rounded-[1.6rem] bg-white p-7 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:w-[calc((100%-1.5rem)/2)] sm:p-8 lg:w-[calc((100%-3rem)/3)]">
+        <figure class="group relative flex w-[85%] shrink-0 snap-start flex-col rounded-[1.6rem] bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:w-[calc((100%-1.5rem)/2)] sm:p-7 lg:w-[calc((100%-3rem)/3)]">
 
-          <span aria-hidden="true" class="pointer-events-none absolute bottom-3 right-6 font-display text-[5.5rem] leading-none text-brand-aqua/25 transition duration-300 group-hover:text-brand-aqua/40">&rdquo;</span>
+          <span aria-hidden="true" class="pointer-events-none absolute bottom-2 right-5 font-display text-[4rem] leading-none text-brand-aqua/25 transition duration-300 group-hover:text-brand-aqua/40">&rdquo;</span>
 
           <div class="flex flex-wrap items-center justify-between gap-3">
             <span class="flex gap-0.5 text-brand-sun"><?= str_repeat(star('h-[1.15rem] w-[1.15rem]'), 5) ?></span>
@@ -718,12 +746,12 @@ tailwind.config = {
             </span>
           </div>
 
-          <blockquote class="relative mt-5 font-display text-[1.22rem] font-medium leading-relaxed text-brand-navy">
+          <blockquote class="relative mt-4 font-display text-[1.08rem] font-medium leading-relaxed text-brand-navy">
             <?= e($r[0]) ?>
           </blockquote>
 
-          <figcaption class="relative mt-auto flex items-center gap-3.5 pt-7">
-            <?= avatar('review-' . ($ri + 1) . '.jpg', $r[1], 'h-12 w-12') ?>
+          <figcaption class="relative mt-auto flex items-center gap-3 pt-5">
+            <?= avatar('review-' . ($ri + 1) . '.jpg', $r[1], 'h-11 w-11') ?>
             <span class="text-[1rem] leading-snug">
               <span class="block whitespace-nowrap font-bold text-brand-navy"><?= e($r[1]) ?></span>
               <span class="block text-[0.95rem] text-brand-slate"><?= e($r[2]) ?></span>
@@ -751,12 +779,12 @@ tailwind.config = {
         <?= icon('phone', 'h-5 w-5') ?> Ask me directly
       </a>
       <?= photo('other/insurance-faq.jpg', 'Medicare insurance consultation with a client reviewing options',
-                'mt-10 block aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Consultation') ?>
+                'mt-8 block aspect-[16/10] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Consultation') ?>
     </div>
 
     <div>
       <div class="space-y-3">
-        <?php foreach ($faqs as $i => $f): ?>
+        <?php foreach (array_slice($faqs, 0, 6) as $i => $f): ?>
           <details class="faq rounded-2xl border border-brand-line bg-brand-mist px-6 py-1 transition hover:border-brand-sky open:bg-white"<?= $i === 0 ? ' open' : '' ?>>
             <summary class="flex items-center justify-between gap-5 py-5 font-display text-[1.22rem] font-semibold leading-snug text-brand-navy">
               <span><?= e($f[0]) ?></span>
@@ -767,21 +795,6 @@ tailwind.config = {
         <?php endforeach; ?>
       </div>
 
-      <!-- Glossary -->
-      <div class="mt-14 border-t-2 border-brand-navy/15 pt-8">
-        <h3 class="flex items-center gap-3 font-display text-[1.6rem] font-bold text-brand-navy">
-          <span class="text-brand-ocean"><?= icon('academic', 'h-7 w-7', 1.5) ?></span>
-          Plain-English glossary
-        </h3>
-        <dl class="mt-6 grid gap-x-10 gap-y-5 sm:grid-cols-2">
-          <?php foreach ($glossary as $g): ?>
-            <div>
-              <dt class="font-bold text-brand-ocean"><?= e($g[0]) ?></dt>
-              <dd class="mt-0.5 leading-snug text-brand-slate"><?= e($g[1]) ?></dd>
-            </div>
-          <?php endforeach; ?>
-        </dl>
-      </div>
     </div>
   </div>
 </section>
@@ -796,7 +809,10 @@ tailwind.config = {
       <div>
         <img src="<?= e($SITE['logo']) ?>" alt="<?= e($SITE['logo_alt']) ?>" width="1080" height="280"
              loading="lazy" class="site-logo h-11 w-auto">
-        <p class="mt-5 max-w-sm leading-relaxed text-brand-slate">
+        <p class="mt-5 font-display text-[1.35rem] font-bold leading-snug text-brand-navy">
+          <?= e($SITE['tagline']) ?>
+        </p>
+        <p class="mt-3 max-w-sm leading-relaxed text-brand-slate">
           Independent, licensed Medicare guidance for <?= e($SITE['service_area']) ?>. Free help, honest answers, and someone who still picks up the phone in February.
         </p>
         <p class="mt-5 text-[0.95rem] text-brand-slate"><?= e($SITE['license']) ?></p>
