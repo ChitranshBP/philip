@@ -28,6 +28,9 @@ $pages = [
     'index.php'        => 'index.html',
     'about.php'        => 'about.html',          // Philip's full story
     'medicare-101.php' => 'medicare-101.html',   // the long-form guide
+    'dental-care.php'  => 'dental-care.html',    // nav item
+    'travel.php'       => 'travel.html',         // nav item
+    'newsletter.php'   => 'newsletter.html',     // nav item
     'contact.php'      => 'contact.html',
 ];
 

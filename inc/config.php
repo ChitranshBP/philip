@@ -12,8 +12,9 @@ $SITE = [
     'agent_title'  => 'Licensed Insurance Agent',
     'brand'        => 'Philip Smith',
     'company'      => 'Trucare Insurance Agency',
+    'company_short'=> 'Trucare Insurance',
     'brand_sub'    => 'Medicare & Senior Benefits',
-    'tagline'      => 'No jargon. No pressure. Just Trucare.',   // Philip's line — use it as-is
+    'tagline'      => 'No Jargon. No Pressure. Just Trucare.',   // Philip's line — use it as-is
 
     // ---- Contact (TODO: real details) -----------------------------
     'phone'        => '(555) 123-4567',          // TODO

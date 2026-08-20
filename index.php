@@ -30,11 +30,16 @@ $portrait = is_file(__DIR__ . '/assets/bg-hero/philip.png') ? 'assets/bg-hero/ph
  * CONTENT
  * ================================================================= */
 
+/* Header + footer navigation. Anchors point at sections on this page;
+   the .php entries are pages still to be built — build.php lists them and
+   skips the ones that do not exist yet. */
 $nav = [
-    '#concierge'  => 'Concierge',
-    '#learn'      => 'Medicare 101',
-    '#mistakes'   => 'Costly Mistakes',
-    '#faq'        => 'FAQ',
+    '#top'              => 'Home',
+    'about.php'         => 'About',
+    '#learn'            => 'Medicare',
+    'dental-care.php'   => 'Dental Care',
+    'travel.php'        => 'Travel',
+    'newsletter.php'    => 'Newsletter',
 ];
 
 /* ---- Concierge promises ---------------------------------------- */
@@ -368,15 +373,17 @@ tailwind.config = {
     <div class="max-w-3xl rise">
 
       <p class="text-[0.92rem] font-bold uppercase tracking-[0.2em] text-white/85">
-        <?= e($SITE['tagline']) ?>
+        <?= e($SITE['company_short']) ?>
       </p>
 
-      <h1 class="mt-5 font-display text-[2.7rem] font-bold leading-[1.05] tracking-tight text-white sm:text-[3.4rem] lg:text-[4.1rem]">
-        Clear Advice From<br class="hidden sm:block"> Someone <span class="text-brand-sun">Who Answers</span>
+      <h1 class="mt-5 font-display text-[2.4rem] font-bold leading-[1.08] tracking-tight text-white sm:text-[3rem] lg:text-[3.5rem]">
+        Real Guidance.<br class="hidden sm:block">
+        Real People.<br class="hidden sm:block">
+        <span class="text-brand-sun">Real Peace of Mind.</span>
       </h1>
 
-      <p class="mt-6 max-w-2xl text-[0.98rem] font-semibold uppercase leading-[1.7] tracking-[0.12em] text-white/85 sm:text-[1.05rem]">
-        We take the confusion out of Medicare and stay with you long after the paperwork is filed.
+      <p class="mt-6 max-w-2xl text-[1.08rem] leading-relaxed text-white/90 sm:text-[1.15rem]">
+        Medicare, Life, Health, Dental, Vision, Annuities &amp; Travel Insurance &mdash; all under one roof, with personalised guidance from a local agent who puts you and your family first.
       </p>
 
       <div class="mt-8">
@@ -385,14 +392,6 @@ tailwind.config = {
         </a>
       </div>
 
-      <ul class="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/25 pt-7">
-        <?php foreach (['No cost, ever', 'No obligation to switch', 'A direct line to me'] as $point): ?>
-          <li class="inline-flex items-center gap-2.5 font-semibold text-white">
-            <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-aqua text-brand-navy"><?= icon('check', 'h-4 w-4', 3) ?></span>
-            <?= e($point) ?>
-          </li>
-        <?php endforeach; ?>
-      </ul>
     </div>
   </div>
 
@@ -416,12 +415,19 @@ tailwind.config = {
     </div>
   </div> -->
 
-  <!-- Carrier logos, riding the bottom edge of the hero -->
-  <div class="absolute inset-x-0 bottom-0 z-10 border-t border-white/50 bg-white/80 py-6 backdrop-blur-md">
-    <h2 class="sr-only">Carriers I compare for you</h2>
-    <div class="marquee">
+</section>
+
+<!-- ═════════════════ CARRIER STRIP ═════════════════ -->
+<section aria-labelledby="carriers-heading" class="border-b border-brand-line bg-white py-7">
+  <div class="mx-auto flex max-w-content flex-col gap-5 px-5 lg:flex-row lg:items-center lg:gap-9 lg:px-8">
+
+    <h2 id="carriers-heading" class="shrink-0 text-[0.78rem] font-bold uppercase tracking-[0.16em] text-brand-slate lg:max-w-[11rem] lg:border-r lg:border-brand-line lg:pr-9">
+      Appointed with <span class="text-brand-ocean"><?= e($SITE['carriers']) ?>+ carriers</span>, including
+    </h2>
+
+    <div class="marquee min-w-0 flex-1">
       <ul class="marquee__track" role="list">
-        <?php for ($pass = 0; $pass < 2; $pass++): ?>
+        <?php for ($pass = 0; $pass < 3; $pass++): ?>
           <?php foreach ($carriers as $c): ?>
             <li<?= $pass ? ' aria-hidden="true"' : '' ?>>
               <img src="assets/img/carriers/<?= e($c[0]) ?>" alt="<?= $pass ? '' : e($c[1]) ?>"
