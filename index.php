@@ -35,9 +35,9 @@ $portrait = is_file(__DIR__ . '/assets/bg-hero/philip.png') ? 'assets/bg-hero/ph
    skips the ones that do not exist yet. */
 $nav = [
     '#top'              => 'Home',
-    'about.php'         => 'About',
+    'about.php'         => 'About Us',
     '#learn'            => 'Medicare',
-    'dental-care.php'   => 'Dental Care',
+    'dental-vision.php' => 'Dental & Vision',
     'travel.php'        => 'Travel',
     'newsletter.php'    => 'Newsletter',
 ];
