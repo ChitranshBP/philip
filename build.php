@@ -31,7 +31,11 @@ $pages = [
     'dental-vision.php'=> 'dental-vision.html',  // nav item
     'travel.php'       => 'travel.html',         // nav item
     'newsletter.php'   => 'newsletter.html',     // nav item
+    'faq.php'          => 'faq.html',            // Q&A
     'contact.php'      => 'contact.html',
+    'thank-you.php'    => 'thank-you.html',   // where the Netlify forms land
+    'privacy-policy.php' => 'privacy-policy.html',
+    'accessibility.php'  => 'accessibility.html',
 ];
 
 // Folders copied wholesale into dist/.
@@ -111,6 +115,7 @@ foreach ($pages as $srcFile => $outFile) {
 
     // Render. Included at global scope on purpose: the pages share
     // $SITE and the require_once'd includes across the whole build.
+    $currentPage = $srcFile;          // inc/header.php marks the nav with this
     ob_start();
     include $srcFile;
     $html = ob_get_clean();

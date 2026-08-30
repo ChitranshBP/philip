@@ -212,7 +212,11 @@ details.faq[open] .faq-chevron                 { transform: rotate(180deg); }
 .floaty { animation: floaty 6s ease-in-out infinite; }
 
 /* ---- Form fields --------------------------------------------------- */
-.field {
+/* The Tailwind forms plugin styles [type=...] at the same specificity as a
+   class and is injected after this file, so these selectors are qualified. */
+input.field,
+select.field,
+textarea.field {
   width: 100%;
   border-radius: .85rem;
   border: 2px solid #E7DFC4;
@@ -222,17 +226,50 @@ details.faq[open] .faq-chevron                 { transform: rotate(180deg); }
   color: #14110F;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
-.field::placeholder { color: #8C857C; }
-.field:hover        { border-color: #D8C9A6; }
-.field:focus {
+input.field::placeholder,
+textarea.field::placeholder { color: #8C857C; }
+input.field:hover,
+select.field:hover,
+textarea.field:hover { border-color: #D8C9A6; }
+input.field:focus,
+select.field:focus,
+textarea.field:focus {
   border-color: #DD4541;
   box-shadow: 0 0 0 4px rgba(221,69,65,.15);
   outline: none;
 }
-.field-error        { border-color: #DD4541; background-color: #FFF4F1; }
+input.field-error,
+select.field-error,
+textarea.field-error { border-color: #DD4541; background-color: #FFF4F1; }
 
 /* ---- Print --------------------------------------------------------- */
 @media print {
   .no-print { display: none !important; }
   body      { background: #fff; }
 }
+
+/* ---- Long-form legal copy ----------------------------------------- *
+   The legal pages are prose, not components, so they get one small set of
+   typographic defaults instead of a utility class on every element.      */
+.prose-trucare h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #14110F;
+}
+.prose-trucare p,
+.prose-trucare li { line-height: 1.75; color: #5C554E; }
+.prose-trucare p  { margin-top: 1rem; }
+.prose-trucare ul { margin-top: 1rem; padding-left: 0; list-style: none; }
+.prose-trucare li { position: relative; margin-top: .6rem; padding-left: 1.5rem; }
+.prose-trucare li::before {
+  content: ''; position: absolute; left: .1rem; top: .72em;
+  width: .4rem; height: .4rem; border-radius: 999px; background: #DD4541;
+}
+.prose-trucare strong { color: #14110F; font-weight: 600; }
+.prose-trucare a {
+  color: #DD4541; font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.prose-trucare a:hover { color: #14110F; }

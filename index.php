@@ -6,6 +6,7 @@
 require_once __DIR__ . '/inc/config.php';
 require_once __DIR__ . '/inc/functions.php';
 require_once __DIR__ . '/inc/form-handler.php';
+require_once __DIR__ . '/inc/medicare.php';
 
 /* The contact form section is gone; inc/form-handler.php stays wired up so a
    dedicated contact page can reuse it. These helpers go with it. */
@@ -30,17 +31,6 @@ $portrait = is_file(__DIR__ . '/assets/bg-hero/philip.png') ? 'assets/bg-hero/ph
  * CONTENT
  * ================================================================= */
 
-/* Header + footer navigation. Anchors point at sections on this page;
-   the .php entries are pages still to be built — build.php lists them and
-   skips the ones that do not exist yet. */
-$nav = [
-    '#top'              => 'Home',
-    'about.php'         => 'About Us',
-    '#learn'            => 'Medicare',
-    'dental-vision.php' => 'Dental & Vision',
-    'travel.php'        => 'Travel',
-    'newsletter.php'    => 'Newsletter',
-];
 
 /* ---- Concierge promises ---------------------------------------- */
 $concierge = [
@@ -70,82 +60,13 @@ $carriers = [
  * indemnity, life & final expense, annuities, under-65 and small
  * business — is kept in inc/data.php for a services page later.        */
 $services = [
-    ['Medicare Advantage (Part C)',    'HMO, PPO and Special Needs Plans, often at a $0 monthly premium.'],
-    ['Medicare Supplements (Medigap)', 'Plans A through N. Keep Original Medicare and close the gaps it leaves.'],
-    ['Part D Prescription Drugs',      'Your exact medication list priced against every formulary in your ZIP.'],
-    ['Dental, Vision & Hearing',       'The cleanings, glasses and hearing aids Medicare will not pay for.'],
+    ['Medicare Advantage (Part C)',    'HMO, PPO and Special Needs Plans, often at a $0 monthly premium.',      'medicare-101.php#part-c'],
+    ['Medicare Supplements (Medigap)', 'Plans A through N. Keep Original Medicare and close the gaps it leaves.','medicare-101.php#medigap'],
+    ['Part D Prescription Drugs',      'Your exact medication list priced against every formulary in your ZIP.', 'medicare-101.php#part-d'],
+    ['Dental, Vision & Hearing',       'The cleanings, glasses and hearing aids Medicare will not pay for.',     'dental-vision.php'],
 ];
 
-/* ---- Medicare 101 ------------------------------------------------ *
- * Facts checked against Philip's own client notes. Deliberately no
- * dollar figures: CMS resets them every year and stale numbers on a
- * page are worse than none. Philip quotes live figures on the call.   */
-$parts = [
-    [
-        'letter' => 'A', 'name' => 'Hospital Insurance',
-        'tag'    => 'Original Medicare',
-        'lead'   => 'The hospital half. Most people have already paid for it.',
-        'covers' => ['Inpatient hospital care', 'Skilled nursing facility care after a qualifying stay', 'Home health care', 'Hospice care'],
-        'facts'  => [
-            ['Who provides it', 'The federal government'],
-            ['What you pay',    'No premium if you have 40+ working quarters, then a deductible per benefit period'],
-            ['When to enrol',   'Automatic if you already draw Social Security or SSDI'],
-        ],
-        'watch'  => 'Forty working quarters is about ten years of paying Medicare taxes — yours or a spouse\'s. You also need to be a citizen or a lawful resident of five years. The deductible applies per benefit period, not per year, so a bad twelve months can trigger it more than once.',
-    ],
-    [
-        'letter' => 'B', 'name' => 'Medical Insurance',
-        'tag'    => 'Original Medicare',
-        'lead'   => 'Everything outside the hospital bed — and the 20% nobody mentions.',
-        'covers' => ['Doctors, specialists and providers', 'Diagnostic and outpatient services', 'Durable medical equipment', 'Preventive screenings, shots and vaccines'],
-        'facts'  => [
-            ['Who provides it', 'The federal government'],
-            ['What you pay',    'A monthly premium, an annual deductible, then 20% of most services'],
-            ['When to enrol',   'Your 7-month initial window, or a Special window if you have employer cover'],
-        ],
-        'watch'  => 'A and B together cover about 80% of your care. The remaining 20% has no ceiling at all — one serious year can run into five figures. That gap is the entire reason Part C and Medigap exist. Higher-income households also pay an IRMAA surcharge, based on a tax return from two years ago.',
-    ],
-    [
-        'letter' => 'C', 'name' => 'Medicare Advantage',
-        'tag'    => 'One private plan',
-        'lead'   => 'One private plan that replaces A and B, usually with extras.',
-        'covers' => ['Everything Parts A and B cover', 'Usually a Part D drug plan built in', 'Dental, vision, hearing, fitness, transport and OTC allowances', 'A maximum out-of-pocket that caps your year'],
-        'facts'  => [
-            ['Who provides it', 'A private carrier approved by Medicare'],
-            ['What you pay',    'Your Part B premium, often a $0 plan premium, then copays up to the yearly cap'],
-            ['When to enrol',   'Your initial window, or 15 October – 7 December each year'],
-        ],
-        'watch'  => 'There are hundreds of these plans and no two counties see the same list — some are income-based, others are built around a chronic condition. Nobody can quote you a copay without knowing your ZIP code. The real protection is the maximum out-of-pocket; the dental and fitness extras are what sell it.',
-    ],
-    [
-        'letter' => 'D', 'name' => 'Prescription Drugs',
-        'tag'    => 'Add-on cover',
-        'lead'   => 'The part that is never automatic — and penalised for life if you skip it.',
-        'covers' => ['Retail and mail-order prescriptions', 'A formulary of covered drugs, arranged in tiers', 'Shots and vaccines', 'An annual cap on what you spend on covered drugs'],
-        'facts'  => [
-            ['Who provides it', 'Private carriers following Medicare\'s rules'],
-            ['What you pay',    'A monthly premium, then a copay set by your drug\'s tier'],
-            ['When to enrol',   'With Parts A and B, or 15 October – 7 December each year'],
-        ],
-        'watch'  => 'Nobody enrols you into a drug plan — you have to choose one, or have other creditable coverage. Skip it and the late-enrolment penalty is added to your premium for the rest of your life. Two plans with the same premium can differ by thousands depending on how they tier your specific drugs.',
-    ],
-];
 
-/* ---- How the pieces fit together -------------------------------- */
-$roads = [
-    [
-        'label' => 'Road one',
-        'title' => 'Original Medicare + a Medigap',
-        'items' => ['Parts A and B stay exactly as they are', 'A Medigap policy pays the share Medicare leaves you', 'Add a standalone Part D drug plan', 'Any provider in the country who takes Medicare'],
-        'note'  => 'A set monthly premium, almost nothing at the counter.',
-    ],
-    [
-        'label' => 'Road two',
-        'title' => 'A Medicare Advantage plan (Part C)',
-        'items' => ['One private plan delivers your Part A and Part B', 'Drug coverage is usually built in', 'Dental, vision, hearing, fitness and OTC extras', 'A maximum out-of-pocket caps your worst year'],
-        'note'  => 'Often a $0 plan premium, care inside a network.',
-    ],
-];
 
 /* ---- Costly mistakes --------------------------------------------- */
 $mistakes = [
@@ -170,21 +91,6 @@ $reviews = [
     ['He answers his own phone. After a year of being passed around call centres, that alone was worth everything.', 'Dolores M.', 'Lakewood Ranch', 'Medicare Advantage'],
 ];
 
-/* ---- Glossary ------------------------------------------------------ */
-$glossary = [
-    ['IEP',           'Initial Enrollment Period — your seven-month window: three months before your 65th birthday month, the month itself, three months after.'],
-    ['GEP',           'General Enrollment Period — 1 January to 31 March, the catch-up window if you missed your IEP.'],
-    ['AEP',           'Annual Enrollment Period — 15 October to 7 December, when you change Advantage and drug plans. Not the same as the GEP.'],
-    ['LEP',           'Late Enrollment Penalty — a permanent surcharge for missing your window on Part B or Part D.'],
-    ['MOOP',          'Maximum out-of-pocket — the yearly ceiling on your costs in an Advantage plan. Original Medicare has none.'],
-    ['Working quarter', 'Three months of paying Medicare taxes. Forty of them, yours or a spouse\'s, earn premium-free Part A.'],
-    ['Formulary',     'The list of prescription drugs a plan covers, sorted into price tiers.'],
-    ['Network',       'The doctors, hospitals and pharmacies an Advantage plan has contracted with.'],
-    ['Creditable coverage', 'Other coverage at least as good as Medicare\'s, which protects you from the late penalty while you delay.'],
-    ['IRMAA',         'An income-related surcharge added to Part B and Part D for higher earners, based on a tax return from two years ago.'],
-    ['ANOC',          'Annual Notice of Change — the September letter listing what your plan is altering in January.'],
-    ['Extra Help',    'A federal programme that lowers prescription costs for people with limited income and resources.'],
-];
 
 $faqs = [
     ['Am I eligible for Medicare?',
@@ -216,145 +122,12 @@ $faqs = [
 ];
 
 $year = date('Y');
+
+/* The home page hero is a photograph, so the bar starts transparent. */
+$transparentHeader = true;
+
+require __DIR__ . '/inc/header.php';
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= e($SITE['company']) ?> — <?= e($SITE['tagline']) ?> | <?= e($SITE['address']['city']) ?>, <?= e($SITE['address']['state']) ?></title>
-<meta name="description" content="<?= e($SITE['tagline']) ?> Philip Smith is a licensed Medicare agent serving <?= e($SITE['service_area']) ?>. No-cost help comparing Medicare Advantage, Supplement and Part D plans. Call <?= e($SITE['phone']) ?>.">
-<link rel="canonical" href="https://example.com/"><!-- TODO: real domain -->
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="<?= e($SITE['company']) ?> — <?= e($SITE['tagline']) ?>">
-<meta property="og:description" content="Concierge Medicare guidance from a licensed local agent. Compare every option in one unhurried sitting.">
-<meta name="theme-color" content="#DD4541">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        /* TRUCARE BRAND
-           Red   #DD4541  accent — buttons, links, active states, rules
-           Cream #FFFAE3  the page ground
-           Black #14110F  all text
-           Plus white for cards and one hairline. Nothing else.
-           The old names (navy, ocean, sun, sand…) are kept as aliases so
-           the markup did not need rewriting — they all resolve into these. */
-        brand: {
-          navy:   '#14110F',   // black — headings
-          ink:    '#14110F',   // black — body emphasis
-          slate:  '#5C554E',   // warm grey — muted body text
-          line:   '#E7DFC4',   // hairline on cream
-          ocean:  '#DD4541',   // THE accent
-          sky:    '#C3352F',   // accent, hover only
-          aqua:   '#F7DFDA',   // accent tint — soft fills
-          foam:   '#F6EFD2',   // cream, one step down — chips
-          mist:   '#FFFAE3',   // cream — the ground
-          sand:   '#FFFAE3',   // cream (alias)
-          shell:  '#FFFFFF',   // white — cards
-          coral:  '#C3352F',   // alias -> accent hover
-          burn:   '#DD4541',   // alias -> accent
-          sun:    '#DD4541',   // alias -> accent
-        },
-      },
-      fontFamily: {
-        display: ['Inter', 'system-ui', 'sans-serif'],
-        sans:    ['Inter', 'system-ui', 'sans-serif'],
-        hand:    ['Caveat', 'cursive'],
-      },
-      boxShadow: {
-        soft: '0 2px 6px rgba(40,30,20,.04), 0 14px 34px -14px rgba(40,30,20,.14)',
-        lift: '0 4px 12px rgba(40,30,20,.05), 0 30px 60px -24px rgba(40,30,20,.22)',
-        sun:  '0 14px 30px -14px rgba(40,30,20,.30)',   // alias -> neutral
-        blue: '0 14px 30px -14px rgba(40,30,20,.30)',   // alias -> neutral
-      },
-      maxWidth: { content: '80rem' },
-    },
-  },
-};
-</script>
-<link rel="stylesheet" href="assets/css/custom.css">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "InsuranceAgency",
-  "name": "<?= e($SITE['brand'] . ' — ' . $SITE['brand_sub']) ?>",
-  "description": "Licensed Medicare insurance agent providing concierge-level help comparing Medicare Advantage, Medicare Supplement and Part D plans.",
-  "slogan": "<?= e($SITE['tagline']) ?>",
-  "telephone": "<?= e($SITE['phone']) ?>",
-  "email": "<?= e($SITE['email']) ?>",
-  "areaServed": "<?= e($SITE['service_area']) ?>",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "<?= e($SITE['address']['street']) ?>",
-    "addressLocality": "<?= e($SITE['address']['city']) ?>",
-    "addressRegion": "<?= e($SITE['address']['state']) ?>",
-    "postalCode": "<?= e($SITE['address']['zip']) ?>",
-    "addressCountry": "US"
-  },
-  "openingHours": "Mo-Fr 09:00-17:00"
-}
-</script>
-</head>
-
-<body class="bg-brand-mist font-sans text-[1.0625rem] leading-relaxed text-brand-ink antialiased">
-
-<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand-ocean focus:px-5 focus:py-3 focus:font-semibold focus:text-white">Skip to main content</a>
-
-<!-- ═════════════════ HEADER (transparent over the hero) ═════════════════ -->
-<div id="siteTop" class="no-print fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4 lg:px-8">
-<header class="headerbar mx-auto max-w-content px-3 sm:px-4">
-  <div class="flex items-center justify-between gap-4 py-2.5">
-
-    <a href="#top" class="brand flex items-center rounded-2xl py-1 pr-2" aria-label="<?= e($SITE['logo_alt']) ?> — home">
-      <img src="<?= e($SITE['logo']) ?>" alt="<?= e($SITE['logo_alt']) ?>" width="1080" height="280"
-           class="site-logo h-9 w-auto sm:h-10">
-    </a>
-
-    <nav class="nav-pill hidden items-center gap-1 rounded-full p-1 xl:flex" aria-label="Main">
-      <?php foreach ($nav as $href => $label): ?>
-        <a href="<?= e($href) ?>" class="nav-link whitespace-nowrap rounded-full px-4 py-2 text-[0.97rem] font-semibold transition"><?= e($label) ?></a>
-      <?php endforeach; ?>
-    </nav>
-
-    <div class="flex items-center gap-2">
-      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="phone-chip hidden items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-[0.97rem] font-bold transition lg:inline-flex">
-        <?= icon('phone', 'h-[1.1rem] w-[1.1rem]') ?><?= e($SITE['phone']) ?>
-      </a>
-      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="hidden items-center gap-2 whitespace-nowrap rounded-full bg-brand-burn px-5 py-2.5 font-bold text-white shadow-sun transition hover:-translate-y-0.5 hover:bg-brand-coral sm:inline-flex">
-        Free Plan Review <?= icon('arrow', 'h-[1.15rem] w-[1.15rem]') ?>
-      </a>
-      <button type="button" id="navToggle" class="menu-btn grid h-11 w-11 place-items-center rounded-full border xl:hidden" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
-        <span id="navIconOpen"><?= icon('menu', 'h-6 w-6') ?></span>
-        <span id="navIconClose" class="hidden"><?= icon('close', 'h-6 w-6') ?></span>
-      </button>
-    </div>
-  </div>
-
-  <nav id="mobileNav" class="mobile-sheet hidden xl:hidden" aria-label="Mobile">
-    <?php foreach ($nav as $href => $label): ?>
-      <a href="<?= e($href) ?>" class="flex items-center justify-between rounded-2xl px-4 py-3.5 text-lg font-semibold text-brand-navy transition hover:bg-brand-foam">
-        <?= e($label) ?><?= icon('arrow', 'h-5 w-5 text-brand-ocean') ?>
-      </a>
-    <?php endforeach; ?>
-    <a href="tel:<?= e($SITE['phone_raw']) ?>" class="mt-2 flex items-center justify-center gap-2 rounded-full bg-brand-ocean px-6 py-4 text-lg font-bold text-white">
-      <?= icon('phone', 'h-5 w-5') ?> Call <?= e($SITE['phone']) ?>
-    </a>
-  </nav>
-</header>
-</div><!-- /#siteTop -->
-
-<main id="main">
-
 <!-- ═════════════════ HERO ═════════════════ -->
 <section id="top" class="hero-dark relative isolate flex min-h-[44rem] items-center overflow-hidden lg:min-h-[50rem]">
 
@@ -520,7 +293,7 @@ tailwind.config = {
       <p class="mt-6 text-[1.12rem] leading-relaxed text-brand-slate">
         Choosing the plan is one afternoon. Living with it is the next twelve months. Six things you get from me every year, for as long as you would like to keep me.
       </p>
-      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="mt-7 inline-flex items-center gap-3 rounded-full bg-brand-ocean px-7 py-4 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
+      <a href="contact.php" class="mt-7 inline-flex items-center gap-3 rounded-full bg-brand-ocean px-7 py-4 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
         Start with a conversation <?= icon('arrow', 'h-5 w-5') ?>
       </a>
     </div>
@@ -563,7 +336,7 @@ tailwind.config = {
             </span>
           </div>
           <p class="mt-6 text-[1.05rem] leading-relaxed text-brand-slate"><?= e($s[1]) ?></p>
-          <a href="tel:<?= e($SITE['phone_raw']) ?>" aria-label="Ask Philip about <?= e($s[0]) ?>"
+          <a href="<?= e($s[2]) ?>" aria-label="Read about <?= e($s[0]) ?>"
              class="absolute inset-0 rounded-[1.75rem] focus-visible:ring-2 focus-visible:ring-brand-ocean focus-visible:ring-offset-2"></a>
         </article>
       <?php endforeach; ?>
@@ -573,7 +346,7 @@ tailwind.config = {
           <p class="font-display text-[1.3rem] font-bold leading-snug text-brand-navy">Not sure which of these you actually need?</p>
           <p class="mt-2 leading-relaxed text-brand-slate">That is exactly what the first conversation is for &mdash; and it costs you nothing.</p>
         </div>
-        <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-ocean px-6 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
+        <a href="contact.php" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-ocean px-6 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
           Ask me <?= icon('arrow', 'h-5 w-5') ?>
         </a>
       </article>
@@ -641,7 +414,7 @@ tailwind.config = {
       <p class="max-w-2xl text-[1.2rem] font-semibold leading-snug text-brand-navy">
         Want the whole thing in plain English? I'll post you a free Medicare 101 booklet &mdash; no salesperson attached to it.
       </p>
-      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-ocean px-7 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
+      <a href="contact.php" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-ocean px-7 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-brand-sky">
         Send me the booklet <?= icon('arrow', 'h-5 w-5') ?>
       </a>
     </div>
@@ -661,7 +434,7 @@ tailwind.config = {
         <p class="mt-5 text-[1.1rem] leading-relaxed text-brand-slate">
           I see the same handful every single year. None of them are anybody's fault &mdash; the system is genuinely confusing. All five are avoidable with one conversation.
         </p>
-        <a href="tel:<?= e($SITE['phone_raw']) ?>" class="mt-7 inline-flex items-center gap-3 rounded-full bg-brand-burn px-7 py-4 font-bold text-white shadow-sun transition hover:-translate-y-0.5 hover:bg-brand-coral">
+        <a href="contact.php" class="mt-7 inline-flex items-center gap-3 rounded-full bg-brand-burn px-7 py-4 font-bold text-white shadow-sun transition hover:-translate-y-0.5 hover:bg-brand-coral">
           Have me check yours <?= icon('arrow', 'h-5 w-5') ?>
         </a>
       </div>
@@ -781,9 +554,17 @@ tailwind.config = {
       <p class="mt-6 text-[1.1rem] leading-relaxed text-brand-slate">
         Not finding yours? That is exactly what the phone is for &mdash; and no question is too small or too late.
       </p>
-      <a href="tel:<?= e($SITE['phone_raw']) ?>" class="mt-7 inline-flex items-center gap-3 rounded-full bg-brand-ocean px-7 py-4 font-bold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-brand-sky">
-        <?= icon('phone', 'h-5 w-5') ?> Ask me directly
-      </a>
+      <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <a href="tel:<?= e($SITE['phone_raw']) ?>" class="inline-flex items-center gap-3 rounded-full bg-brand-ocean px-7 py-4 font-bold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-brand-sky">
+          <?= icon('phone', 'h-5 w-5') ?> Ask me directly
+        </a>
+        <a href="faq.php" class="group inline-flex items-center gap-2 font-bold text-brand-ocean transition hover:text-brand-navy">
+          See all questions
+          <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-ocean/12 transition group-hover:bg-brand-ocean group-hover:text-white">
+            <?= icon('arrow-ne', 'h-3.5 w-3.5', 2.4) ?>
+          </span>
+        </a>
+      </div>
       <?= photo('other/insurance-faq.jpg', 'Medicare insurance consultation with a client reviewing options',
                 'mt-8 block aspect-[16/10] w-full rounded-[1.75rem] object-cover shadow-lift', 'Medicare Consultation') ?>
     </div>
@@ -805,183 +586,4 @@ tailwind.config = {
   </div>
 </section>
 
-</main>
-
-<!-- ═════════════════ FOOTER ═════════════════ -->
-<footer class="border-t border-brand-line bg-brand-mist text-brand-slate">
-  <div class="mx-auto max-w-content px-5 py-16 lg:px-8">
-
-    <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
-      <div>
-        <img src="<?= e($SITE['logo']) ?>" alt="<?= e($SITE['logo_alt']) ?>" width="1080" height="280"
-             loading="lazy" class="site-logo h-11 w-auto">
-        <p class="mt-5 font-display text-[1.35rem] font-bold leading-snug text-brand-navy">
-          <?= e($SITE['tagline']) ?>
-        </p>
-        <p class="mt-3 max-w-sm leading-relaxed text-brand-slate">
-          Independent, licensed Medicare guidance for <?= e($SITE['service_area']) ?>. Free help, honest answers, and someone who still picks up the phone in February.
-        </p>
-        <p class="mt-5 text-[0.95rem] text-brand-slate"><?= e($SITE['license']) ?></p>
-      </div>
-
-      <nav aria-label="Footer">
-        <h2 class="font-display text-[1.15rem] font-semibold text-brand-navy">Explore</h2>
-        <ul class="mt-4 space-y-2.5 text-brand-slate">
-          <?php foreach ($nav as $href => $label): ?>
-            <li><a href="<?= e($href) ?>" class="hover:text-brand-ocean"><?= e($label) ?></a></li>
-          <?php endforeach; ?>
-        </ul>
-      </nav>
-
-      <div>
-        <h2 class="font-display text-[1.15rem] font-semibold text-brand-navy">Get in touch</h2>
-        <ul class="mt-4 space-y-3 text-brand-slate">
-          <li class="flex items-start gap-3"><?= icon('phone', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><a href="tel:<?= e($SITE['phone_raw']) ?>" class="font-bold text-brand-navy hover:text-brand-ocean"><?= e($SITE['phone']) ?></a></li>
-          <li class="flex items-start gap-3"><?= icon('mail', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><a href="mailto:<?= e($SITE['email']) ?>" class="break-all hover:text-brand-ocean"><?= e($SITE['email']) ?></a></li>
-          <li class="flex items-start gap-3"><?= icon('pin', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><span><?= e($SITE['address_line']) ?></span></li>
-          <li class="flex items-start gap-3"><?= icon('clock', 'mt-1 h-5 w-5 shrink-0 text-brand-ocean') ?><span><?= e($SITE['hours']) ?></span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Medicare marketing disclaimers -->
-    <div class="mt-14 space-y-3 border-t border-brand-line pt-8 text-[0.92rem] leading-relaxed text-brand-slate">
-      <p>We do not offer every plan available in your area. Any information we provide is limited to those plans we do offer in your area. Please contact <a href="https://www.medicare.gov" class="underline hover:text-brand-ocean">Medicare.gov</a> or 1-800-MEDICARE (TTY 1-877-486-2048), 24 hours a day / 7 days a week, to get information on all of your options.</p>
-      <p>Not connected with or endorsed by the United States government or the federal Medicare program. This is a solicitation for insurance. A licensed insurance agent may contact you.</p>
-      <p>Enrollment in a plan may be limited to certain times of the year unless you qualify for a Special Enrollment Period.</p>
-    </div>
-
-    <div class="mt-8 flex flex-col gap-3 border-t border-brand-line pt-8 text-[0.92rem] text-brand-slate sm:flex-row sm:items-center sm:justify-between">
-      <p>&copy; <?= $year ?> <?= e($SITE['brand']) ?>. All rights reserved.</p>
-      <p class="flex gap-5">
-        <a href="#" class="hover:text-brand-ocean">Privacy Policy</a>
-        <a href="#" class="hover:text-brand-ocean">Accessibility</a>
-      </p>
-    </div>
-  </div>
-</footer>
-
-<!-- Sticky call bar for phones -->
-<div class="no-print fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-brand-line bg-white/95 p-2.5 backdrop-blur md:hidden">
-  <a href="tel:<?= e($SITE['phone_raw']) ?>" class="flex items-center justify-center gap-2 rounded-full bg-brand-ocean px-4 py-3.5 font-bold text-white">
-    <?= icon('phone', 'h-5 w-5') ?> Call now
-  </a>
-  <a href="tel:<?= e($SITE['phone_raw']) ?>" class="flex items-center justify-center gap-2 rounded-full bg-brand-burn px-4 py-3.5 font-bold text-white">Free review</a>
-</div>
-<div class="h-[4.5rem] md:hidden" aria-hidden="true"></div>
-
-<script>
-(function () {
-  'use strict';
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------- Mobile navigation ---------- */
-  var toggle = document.getElementById('navToggle'),
-      menu   = document.getElementById('mobileNav'),
-      iOpen  = document.getElementById('navIconOpen'),
-      iClose = document.getElementById('navIconClose');
-
-  /* ---------- Header: transparent on the hero, solid after it ---------- */
-  var siteTop = document.getElementById('siteTop'), navOpen = false;
-
-  /* Highlight whichever section the visitor is currently reading. */
-  var spy = [];
-  document.querySelectorAll('.nav-link[href^="#"]').forEach(function (link) {
-    var target = document.querySelector(link.getAttribute('href'));
-    if (target) spy.push({ link: link, target: target });
-  });
-
-  function paintHeader() {
-    siteTop.classList.toggle('is-solid', navOpen || window.scrollY > 80);
-
-    var line = window.scrollY + 140, current = null;
-    spy.forEach(function (s) {
-      if (s.target.offsetTop <= line) current = s.link;
-    });
-    spy.forEach(function (s) { s.link.classList.toggle('is-active', s.link === current); });
-  }
-  addEventListener('scroll', paintHeader, { passive: true });
-  paintHeader();
-
-  function setNav(open) {
-    navOpen = open;
-    menu.classList.toggle('hidden', !open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    iOpen.classList.toggle('hidden', open);
-    iClose.classList.toggle('hidden', !open);
-    paintHeader();
-  }
-  toggle.addEventListener('click', function () { setNav(menu.classList.contains('hidden')); });
-  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
-
-  /* ---------- Testimonial slider ---------- */
-  var track = document.getElementById('reviewTrack'),
-      revNav = document.getElementById('reviewNav');
-
-  if (track && revNav) {
-    var revBtns = revNav.querySelectorAll('[data-slide]');
-
-    function step() {
-      var card = track.firstElementChild;
-      return card ? card.getBoundingClientRect().width + 24 : track.clientWidth;
-    }
-
-    function paintSlider() {
-      // Nothing to scroll (three cards on a wide screen) — hide the arrows.
-      // Inline style, because the utility class on the wrapper sets display.
-      var overflow = track.scrollWidth - track.clientWidth;
-      revNav.style.display = overflow < 8 ? 'none' : 'flex';
-
-      var atStart = track.scrollLeft < 8,
-          atEnd   = track.scrollLeft >= overflow - 8;
-      revBtns.forEach(function (b) {
-        b.disabled = b.dataset.slide === 'prev' ? atStart : atEnd;
-      });
-    }
-
-    revBtns.forEach(function (b) {
-      b.addEventListener('click', function () {
-        track.scrollBy({ left: b.dataset.slide === 'prev' ? -step() : step(), behavior: reduce ? 'auto' : 'smooth' });
-      });
-    });
-
-    track.addEventListener('scroll', paintSlider, { passive: true });
-    addEventListener('resize', paintSlider);
-    paintSlider();
-  }
-
-  /* ---------- Text size preference ---------- */
-  var SIZES = ['', 'fs-lg', 'fs-xl'], fsBtns = document.querySelectorAll('[data-fs]');
-  function applyFs(size) {
-    SIZES.forEach(function (s) { if (s) document.documentElement.classList.remove(s); });
-    if (size) document.documentElement.classList.add(size);
-    fsBtns.forEach(function (b) {
-      var on = b.dataset.fs === size;
-      b.classList.toggle('bg-white', on);
-      b.classList.toggle('text-brand-ocean', on);
-      b.setAttribute('aria-pressed', String(on));
-    });
-    try { localStorage.setItem('fs', size); } catch (e) {}
-  }
-  fsBtns.forEach(function (b) { b.addEventListener('click', function () { applyFs(b.dataset.fs); }); });
-  var savedFs = ''; try { savedFs = localStorage.getItem('fs') || ''; } catch (e) {}
-  applyFs(SIZES.indexOf(savedFs) > -1 ? savedFs : '');
-
-  /* ---------- Gentle reveal on scroll ---------- */
-  if ('IntersectionObserver' in window && !reduce) {
-    var rio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('rise'); rio.unobserve(en.target); }
-      });
-    }, { rootMargin: '0px 0px -10% 0px' });
-    document.querySelectorAll('section article, section ol > li, section figure').forEach(function (el, i) {
-      el.style.animationDelay = (i % 4) * 0.07 + 's';
-      rio.observe(el);
-    });
-  }
-
-})();
-</script>
-</body>
-</html>
+<?php require __DIR__ . '/inc/footer.php';

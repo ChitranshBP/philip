@@ -10,6 +10,15 @@ function e(?string $s): string
 }
 
 /**
+ * Turns a heading into an id/anchor: "Penalties and deadlines" -> "penalties-and-deadlines".
+ */
+function slug(string $text): string
+{
+    $s = strtolower(trim(preg_replace('/[^A-Za-z0-9]+/', '-', $text), '-'));
+    return $s === '' ? 'section' : $s;
+}
+
+/**
  * Inline SVG icon (Heroicons outline, 24px grid).
  */
 function icon(string $name, string $class = 'h-6 w-6', float $stroke = 1.7): string

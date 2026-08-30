@@ -1,121 +1,164 @@
-# Philip Smith — Medicare & Senior Benefits
+# Trucare Insurance — Philip Smith
 
-A bright, coastal, single-page marketing site for a licensed Medicare agent.
-PHP + Tailwind CSS. No build step, no database, no dependencies to install.
+Marketing site for **Trucare Insurance Agency**, Sarasota FL. Licensed Medicare
+agent Philip Smith. PHP templates → static HTML, deployed on Netlify.
 
 ---
 
-## Run it
+## The client, in his own words
 
-```bash
-cd /Users/boss/Desktop/Philip
-php -S localhost:8000
+Everything on this site comes from Philip's brief
+(`docs/client-brief.pdf`) — his bio, the Q&A
+copy, and two sites he pointed at as references. Read that PDF before writing new
+copy; it is the source of truth for tone.
+
+| | |
+|---|---|
+| **Business** | Trucare Insurance Agency, Sarasota, Florida |
+| **Agent** | Philip Smith, owner, licensed insurance broker |
+| **Experience** | 15 years in Medicare |
+| **Tagline** | *No Jargon. No Pressure. Just Trucare.* |
+| **Phone** | (941) 400-0109 — available seven days a week |
+| **Email** | philipsmiththankyou@gmail.com *(confirm — a @trucare domain would look stronger)* |
+| **Products** | Medicare Advantage, Medicare Supplements (Medigap), Part D, Special Needs Plans, indemnity, cancer plans, dental/vision/hearing, life & final expense, fixed annuities, travel |
+
+**His story, which drives the whole tone:** Philip came to the US from South
+Africa in 2000 with no qualifications and no safety net. He knows what being lost
+feels like, which is why he refuses to hand people a brochure. Most new clients
+come from referrals. He answers his own phone.
+
+### Reference sites he named
+
+- **https://grueninghealthwealth.com** — *"I like the content on this site and want
+  to include most of it and want to offer the same."* Their nav is Home / About /
+  Medicare / **Retirement** / **Major exposures** / Contact. Retirement and Major
+  Exposures are the two sections we have not built yet.
+- **https://faithinsurancesolutions.com** — he liked how their **Q&A is laid out**.
+  That drove the structure of `faq.php`. Note their name appears in his pasted
+  copy; it has been stripped from ours.
+
+---
+
+## Brand
+
+Five colours. Nothing else. Defined once in the Tailwind block at the top of
+`inc/header.php`, aliased so old class names still resolve.
+
+| Role | Hex | Used for |
+|---|---|---|
+| Accent | `#DD4541` | Buttons, links, active nav, rules, numerals |
+| Ground | `#FFFAE3` | Page background (cream) |
+| Ink | `#14110F` | All headings and body text (black) |
+| Card | `#FFFFFF` | Cards and panels sitting on the cream |
+| Line | `#E7DFC4` | Hairlines and borders |
+
+`#C3352F` is the one exception: a deeper red for small bold text (eyebrows), where
+`#DD4541` on cream only reaches 3.5:1 contrast. Sections alternate white and cream
+only — no third background.
+
+**Type:** Inter throughout, standing in for **Aptos**, which the brief names but
+which is not licensed for web use. If Trucare buys an Aptos webfont licence, drop
+the `.woff2` files in `assets/fonts/` and swap the `fontFamily` block. Caveat is
+used once, for Philip's signature.
+
+**Logo:** `assets/logo/truecare-logo.png` — black artwork on transparency. CSS
+flips it white over the hero photo and leaves it black on light backgrounds.
+
+---
+
+## Structure
+
+```
+index.php          Home
+about.php          Philip's full story
+faq.php            Medicare Q&A + glossary
+inc/config.php     $SITE settings, $nav, $glossary  ← edit business details here
+inc/header.php     <!doctype> → <main>, shared by every page
+inc/footer.php     </main> → </html>, incl. the site JavaScript
+inc/functions.php  e(), icon(), photo(), avatar(), slug(), star()
+inc/form-handler.php  Contact form POST handler (no form on the site right now)
+inc/data.php       Long-form Medicare content parked for the Medicare 101 page
+build.php          Renders every page to dist/ as static HTML
+netlify.toml       Netlify build command + headers
 ```
 
-Then open <http://localhost:8000>.
+### Pages still to build
 
-For production, drop the whole folder on any PHP 7.4+ host (shared hosting,
-cPanel, DigitalOcean, whatever) and point the domain at it.
+Every one is already registered in `build.php` and linked in the nav, so they
+compile the moment the file exists.
+
+| File | Nav label | Notes |
+|---|---|---|
+| `medicare-101.php` | (linked from home) | Long-form guide. Content waiting in `inc/data.php`. |
+| `dental-vision.php` | Dental & Vision | |
+| `travel.php` | Travel | |
+| `newsletter.php` | Newsletter | Needs a mailing-list provider decision. |
+| `contact.php` | — | `inc/form-handler.php` is wired and waiting. |
+
+Until they exist those nav links 404. Building a page is ~10 lines: require
+config + functions, set `$pageTitle` / `$pageDesc`, require the header, write
+sections, require the footer. Copy `about.php` as the pattern. Pages with a
+photographic hero set `$transparentHeader = true` before the header require.
 
 ---
 
-## Files
+## Run and deploy
 
-| Path | What it is |
-|---|---|
-| `index.php` | The entire page — content arrays at the top, markup below, JS at the bottom |
-| `inc/config.php` | **Start here.** Name, phone, email, address, licence, hours |
-| `inc/functions.php` | Escaping, inline SVG icon set, photo-with-fallback helper |
-| `inc/form-handler.php` | Contact form: validation, spam traps, email, CSV backup |
-| `assets/css/custom.css` | The thin hand-written layer over Tailwind |
-| `assets/img/` | Drop photos here — see `assets/img/README.txt` |
-| `storage/leads.csv` | Auto-created backup of every submission |
+```bash
+php -S localhost:8000        # local preview
+php build.php                # render everything to dist/
+```
+
+Netlify reads `netlify.toml`: build command `php build.php`, publish `dist`.
+`build.php` rewrites internal `.php` links to `.html`, copies `assets/`, and
+reports any page that does not exist yet. Note PHP is present in Netlify's build
+image but is not a supported runtime — if a deploy fails with *php: command not
+found*, build locally and commit `dist/`.
 
 ---
 
 ## Before it goes live
 
-Everything below is marked `TODO` in the code.
+- [ ] **Licence number** — `FL License #W000000` is a placeholder and appears
+      directly under Philip's signature.
+- [ ] **Street address** — `123 Main Street` is a placeholder.
+- [ ] **Confirm the email**, and ideally move off gmail to the domain.
+- [ ] **Testimonials** — the three in `index.php` are invented. Replace with real,
+      permissioned reviews. Same for the `clients` (1,200) and `carriers` (30)
+      figures in config.
+- [ ] **Carrier logos** — `assets/img/carriers/` came off another agency's CDN.
+      Get official assets and written permission; CMS marketing rules are strict
+      about implying endorsement.
+- [ ] **Canonical URL** — still `https://example.com/` in the header partial.
+- [ ] **Medicare disclaimers** — present in the footer; have a compliance officer
+      confirm the wording for the plan year.
 
-1. **`inc/config.php`** — replace phone, email, address, licence number, years,
-   client count, carrier count, service area, and the two form email addresses.
-   *The current phone numbers and email are placeholders and must not ship.*
-2. **Photos** — add `assets/img/hero-bg.jpg` and `assets/img/philip-portrait.jpg`.
-   Until they exist the page shows a designed placeholder, so nothing breaks.
-   The portrait needs to be professionally shot; read `assets/img/README.txt`
-   for the framing notes (the hero headline sits over the left of that image).
-3. **Testimonials** — the three reviews in `$reviews` (top of `index.php`) are
-   sample copy. Swap them for real, permissioned quotes before launch.
-4. **Personality block** — the three details in `$personal` ("On the water by
-   six", etc.) are invented. Replace with things that are actually true of Philip.
-5. **Canonical URL and OG tags** — set the real domain in the `<head>`.
-6. **Privacy Policy / Accessibility** — the two footer links are `#` stubs.
-7. **Compliance** — the CMS-style disclaimers are in the footer. Have Philip's
-   compliance contact review the wording against his carrier requirements.
+### One correction we made to the brief
 
----
+Philip's source text is from 2021 and recommends **Plan F**. Plan F and Plan C are
+**closed to anyone who became Medicare-eligible on or after 1 January 2020**. The
+site leads with Plan G, positions Plan N as the cheaper option, and states F's
+cut-off. Do not revert this.
 
-## Editing content
+We also deliberately publish **no dollar figures** — premiums, deductibles and the
+Part D cap are reset by CMS every year, and a stale number is worse than none.
+Philip quotes live figures on the call.
 
-All copy lives in PHP arrays at the top of `index.php` — no hunting through
-markup:
+### Ideas from the brief not yet built
 
-`$nav` · `$concierge` · `$services` · `$parts` · `$gaps` · `$costs` ·
-`$mistakes` · `$compare` · `$steps` · `$reviews` · `$glossary` · `$faqs`
-
-Add a row to any array and the section grows. Nothing else to touch.
-
----
-
-## The contact form
-
-- Validates name and phone; email and ZIP are optional but checked if given.
-- Two spam traps: a hidden honeypot field and a minimum time-to-submit.
-- Post/redirect/get, so a refresh never resubmits.
-- Every lead is appended to `storage/leads.csv` **before** the email is sent,
-  so a mail failure never loses a lead. `storage/.htaccess` blocks web access
-  to that file on Apache — **on nginx you must block `/storage/` yourself.**
-- Sending uses PHP `mail()`. Many hosts do not have this configured. If mail
-  does not arrive, swap the `mail()` call in `inc/form-handler.php` for SMTP
-  (PHPMailer or Symfony Mailer) using the host's credentials.
+- **IEP Calculator** — his source mentions one ("determine the dates of your exact
+  Initial Enrollment Period"). A small date-picker computing the 7-month window
+  would be genuinely useful and easy to build.
+- **Retirement** and **Major Exposures** pages, per the Gruening site he liked.
+- **"Connect with Trucare"** — a social/contact block he sketched.
 
 ---
 
-## Design notes
+## Photography
 
-**Palette** — bright coastal, no dark or muted fills, no gradients anywhere.
-
-| Token | Hex | Used for |
-|---|---|---|
-| `brand-navy` | `#0F3E58` | Headlines |
-| `brand-ocean` | `#0E7FA8` | Primary blue, links, footer |
-| `brand-sky` | `#2BA9D8` | Hover state, hero fallback |
-| `brand-aqua` | `#4FD1CE` | Ticks, small accents |
-| `brand-foam` / `brand-mist` | `#E6F6FB` / `#F4FBFD` | Pale section washes |
-| `brand-sand` / `brand-shell` | `#FDF4E6` / `#FFFAF3` | Warm section washes |
-| `brand-burn` / `brand-coral` | `#DE4F2C` / `#FF7A59` | CTAs and accents |
-| `brand-sun` | `#FFC24B` | Stars, highlight bands |
-
-**Type** — Plus Jakarta Sans (headlines, tight negative tracking) and Inter
-(body), with Caveat for the signature.
-
-**Senior-friendly by default** — 17px base, A / A+ / A++ text-size control in
-the top bar that remembers the choice, thick visible focus rings, large touch
-targets, a sticky call bar on phones, and `prefers-reduced-motion` respected.
-
-**Interactive** — keyboard-accessible Medicare 101 tabs (arrow keys, Home/End),
-native `<details>` FAQ accordion, scroll reveals, animated nav underlines.
-
-**Accessibility** — skip link, landmarks, labelled form fields with inline
-errors, `aria-live` on form feedback, no horizontal scroll at any width.
-
----
-
-## Known trade-offs
-
-- **Tailwind is loaded from the CDN.** Fine for handoff and fast to edit, but it
-  ships the compiler to the browser. Before launch, run the Tailwind CLI once
-  and link a compiled stylesheet instead — cuts roughly 300 KB and stops the
-  brief unstyled flash on slow connections.
-- **Google Fonts are external.** Self-host them if Philip needs the site to work
-  offline or wants stricter privacy.
+- `assets/bg-hero/` — hero photograph and Philip's portrait (client supplied;
+  he noted the portrait will change).
+- `assets/img/about/` — Unsplash, free licence. Credits in the header comment of
+  `about.php`: Esther Ann, Hector Reyes, Josiah Gibbs (the Sarasota shot is the
+  real Ringling Bridge).
+- `assets/img/` — client-supplied photos for the Medicare and FAQ sections.
