@@ -115,7 +115,13 @@ foreach ($pages as $srcFile => $outFile) {
 
     // Render. Included at global scope on purpose: the pages share
     // $SITE and the require_once'd includes across the whole build.
+    // Every page is included at global scope in ONE php process, so anything
+    // a page sets survives into the next one. index.php sets
+    // $transparentHeader, which silently made every later page render with a
+    // white-on-cream invisible header. Reset the per-page state each time.
+    unset($transparentHeader, $pageTitle, $pageDesc);
     $currentPage = $srcFile;          // inc/header.php marks the nav with this
+
     ob_start();
     include $srcFile;
     $html = ob_get_clean();

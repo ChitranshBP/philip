@@ -158,3 +158,8 @@ tailwind.config = {
 </div><!-- /#siteTop -->
 
 <main id="main">
+<?php
+/* Consume the per-page variables so they cannot leak into the next page
+   when several are rendered in one process (see build.php). */
+unset($transparentHeader, $pageTitle, $pageDesc);
+?>
